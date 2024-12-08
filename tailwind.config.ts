@@ -14,13 +14,8 @@ export default {
       // 색상 설정해주세요
       colors: {
         primary: "#9400FF",
-        secondary: "#121212",
-        gray1: "#D9D9D9",
-        gray2: "#ffff50",
-        gray3: "#ffffff38",
-        gray4: "#ffffff05",
-        error: "#ff0000",
-        heart: "#ff0000",
+        sidebar: "#1D1D1D",
+        gray: "#D9D9D9",
       },
       fontFamily: {
         roboto: ["var(--font-roboto)"],
