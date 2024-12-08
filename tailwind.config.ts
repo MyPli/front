@@ -12,7 +12,11 @@ export default {
   theme: {
     extend: {
       // 색상 설정해주세요
-      colors: {},
+      colors: {
+        primary: "#9400FF",
+        sidebar: "#1D1D1D",
+        gray: "#D9D9D9",
+      },
       fontFamily: {
         roboto: ["var(--font-roboto)"],
       },
