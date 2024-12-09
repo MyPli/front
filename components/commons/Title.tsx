@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
 
 interface TitleProps {
-  text: string;
+	text: string;
+	className?: string;
 }
 
-const Title = ({ text }: TitleProps) => {
-  return <h1 className="text-3xl font-semibold">{text}</h1>;
+const Title = ({ text, className }: TitleProps) => {
+	return <h1 className={`text-3xl font-semibold ${className}`}>{text}</h1>;
 };
 
 export default Title;
