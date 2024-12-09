@@ -1,12 +1,12 @@
 import Title from "@/components/commons/Title";
 import React from "react";
 
-const Home = async () => {
+const MyPlayList = () => {
   return (
     <div>
-      <Title text="인기 플레이리스트" />
+      <Title text="내 플레이리스트" />
     </div>
   );
 };
 
-export default Home;
+export default MyPlayList;
