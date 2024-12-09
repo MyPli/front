@@ -11,10 +11,24 @@ export default {
   ],
   theme: {
     extend: {
-      // 색상 설정해주세요
-      colors: {},
+      colors: {
+        primary: "#9400FF",
+        sidebar: "#1D1D1D",
+        gray: "#D9D9D9",
+        divider: "#8E8E8E",
+      },
       fontFamily: {
         roboto: ["var(--font-roboto)"],
+      },
+      spacing: {
+        sidelistTop: "71px",
+        mainTop: "91px",
+        mainLeft: "102px",
+      },
+
+      width: {
+        sideOpen: "220px",
+        sideClose: "96px",
       },
     },
   },
