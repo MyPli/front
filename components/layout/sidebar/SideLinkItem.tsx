@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSideStore } from "@/store/sideStore";
+import { useSideListStore } from "@/store/sideListStore";
 import {
   IoAddCircle,
   IoAddCircleOutline,
@@ -41,7 +41,7 @@ const SIDE_ITEMS: sideItemProps[] = [
 
 const SideLinkItem = () => {
   const pathname = usePathname();
-  const { isOpen } = useSideStore();
+  const { isOpen } = useSideListStore();
 
   return SIDE_ITEMS.map(({ href, fillIcon, outlineIcon, title }) => (
     <li className={`${isOpen ? "px-3 mb-2 " : "px-4"}`} key={href}>

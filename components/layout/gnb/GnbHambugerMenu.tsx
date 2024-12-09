@@ -1,9 +1,9 @@
-import { useSideStore } from "@/store/sideStore";
+import { useSideListStore } from "@/store/sideListStore";
 import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 const HambugerMenu = () => {
-  const { activeSideList } = useSideStore();
+  const { activeSideList } = useSideListStore();
   return (
     <button
       className="w-12 h-12 p-2 flex-center  hover:bg-gray rounded-md"
