@@ -11,11 +11,14 @@ const SideList = () => {
 
   return (
     <ul
-      className={`fixed top-sidelistTop left-0 flex flex-col  h-full z-10  py-4 rounded-md
+      className={`fixed top-sidelistTop left-0 
+        h-[calc(100vh-71px)] 
+        z-10 py-4 rounded-md  
+        overflow-y-scroll 
       ${
         isOpen
-          ? "bg-sidebar w-sideOpen overflow-y-scroll"
-          : "bg-black w-sideClose  gap-6  py-2"
+          ? "bg-sidebar w-sideOpen translate-x-0"
+          : "bg-black w-sideClose gap-6 py-2 "
       }
     `}
     >
