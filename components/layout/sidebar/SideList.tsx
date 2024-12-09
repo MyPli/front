@@ -15,12 +15,9 @@ const SideList = () => {
         h-[calc(100vh-71px)] 
         z-10 py-4 rounded-md  
         overflow-y-auto 
+        scrollbar-hide
         
-      ${
-        isOpen
-          ? "bg-sidebar w-sideOpen translate-x-0"
-          : "bg-black w-sideClose gap-6 py-2 "
-      }
+      ${isOpen ? "bg-sidebar w-sideOpen" : "bg-black w-sideClose gap-6 py-2 "}
     `}
     >
       <SideLinkItem />
