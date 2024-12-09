@@ -14,7 +14,8 @@ const SideList = () => {
       className={`fixed top-sidelistTop left-0 
         h-[calc(100vh-71px)] 
         z-10 py-4 rounded-md  
-        overflow-y-scroll 
+        overflow-y-auto 
+        
       ${
         isOpen
           ? "bg-sidebar w-sideOpen translate-x-0"
