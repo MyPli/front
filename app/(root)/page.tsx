@@ -11,7 +11,7 @@ const dummy = {
 
 const Home = async () => {
 	return (
-		<div className='w-[calc(100vw-110px)] h-[100dvh]'>
+		<div className='w-[calc(100vw-110px)]'>
 			<Title text='인기 플레이리스트' />
 			<div className='w-full mt-[25px] grid grid-cols-3 pr-0'>
 				{[dummy, dummy, dummy].map((item, i) => (
