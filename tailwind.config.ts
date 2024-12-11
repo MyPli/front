@@ -13,6 +13,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        black: "#121212",
         primary: "#9400FF",
         sidebar: "#1D1D1D",
         gray: "#D9D9D9",
