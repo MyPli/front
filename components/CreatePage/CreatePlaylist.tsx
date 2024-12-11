@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { IoAddCircle } from 'react-icons/io5';
 import { PlayList } from './Playlist';
@@ -16,7 +18,7 @@ const CreatePlaylist = ({ onAdd, ...props }: IProps) => {
 				height={50}
 				className='rounded-lg w-[60px] h-[50px] object-cover'
 			/>
-			<div className='ml-4 flex-1'>
+			<div className='ml-4 flex-[1.5]'>
 				<span className='block text-base font-semibold text-secondary'>
 					{props.musicName}
 				</span>
