@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ReactQueryProviders from "@/utils/ReactQueryProviders";
 
 const roboto = localFont({
   src: [
@@ -49,8 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${roboto.variable}`}>{children}</body>
+    <html lang="kr">
+      <ReactQueryProviders>
+        <body className={`${roboto.variable}`}>{children}</body>
+      </ReactQueryProviders>
     </html>
   );
 }
