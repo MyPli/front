@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -39,7 +39,7 @@ const GnbList = () => {
       </Modal>
       <ul
         className="pr-8 pl-6 py-5 flex items-center justify-between 
-    fixed top-0 left-0 z-10 w-full"
+    fixed top-0 left-0 z-10 w-full bg-black"
       >
         <li className="flex flex-row gap-8 items-center">
           <HambugerMenu />
