@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
-import scrollbarHide from "tailwind-scrollbar-hide";
+import type { Config } from 'tailwindcss';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 export default {
   content: [
@@ -27,12 +27,11 @@ export default {
         mainTop: "91px",
         mainLeft: "102px",
       },
-
-      width: {
-        sideOpen: "220px",
-        sideClose: "96px",
-      },
-    },
-  },
-  plugins: [scrollbarHide],
+			width: {
+				sideOpen: '220px',
+				sideClose: '96px',
+			},
+		},
+	},
+	plugins: [scrollbarHide],
 } satisfies Config;
