@@ -112,9 +112,7 @@ const GnbMyPageModal = () => {
               <div className="flex max-w-full">
                 <input
                   onChange={handleChange}
-                  className={`text-lg px-2 py-1 outline-none 
-                      font-medium border border-primary border-solid rounded-md
-                      focus:ring-2 ring-primary
+                  className={`form-input p-1 text-lg
                       `}
                   placeholder="닉네임"
                   value={nickname}

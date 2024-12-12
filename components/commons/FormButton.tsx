@@ -3,19 +3,14 @@ import React from "react";
 interface FormButtonProps {
   color: "primary" | "white";
   size: "large" | "small";
-  onMouseDown?: () => void;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-const FormButton = ({
-  children,
-  color,
-  size,
-  onMouseDown,
-}: FormButtonProps) => {
+const FormButton = ({ children, color, size, onClick }: FormButtonProps) => {
   return (
     <button
-      onMouseDown={onMouseDown}
+      onClick={onClick}
       className={`text-center  rounded-md
         ${
           color === "primary"
