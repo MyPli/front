@@ -1,14 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSideListStore } from "@/store/sideListStore";
+import { useSideBarStore } from "@/store/sideBarStore";
 import {
   IoAddCircle,
   IoAddCircleOutline,
-  IoBookmark,
-  IoBookmarkOutline,
   IoFolderOpen,
   IoFolderOpenOutline,
+  IoHeart,
+  IoHeartOutline,
 } from "react-icons/io5";
 
 interface sideItemProps {
@@ -26,10 +26,10 @@ const SIDE_ITEMS: sideItemProps[] = [
     href: "/myPlaylist",
   },
   {
-    outlineIcon: <IoBookmarkOutline className="w-full h-full" />,
-    fillIcon: <IoBookmark className="w-full h-full" />,
-    title: "북마크",
-    href: "/bookmark",
+    outlineIcon: <IoHeartOutline className="w-full h-full" />,
+    fillIcon: <IoHeart className="w-full h-full" />,
+    title: "좋아요",
+    href: "/likes",
   },
   {
     outlineIcon: <IoAddCircleOutline className="w-full h-full" />,
@@ -41,7 +41,7 @@ const SIDE_ITEMS: sideItemProps[] = [
 
 const SideLinkItem = () => {
   const pathname = usePathname();
-  const { isOpen } = useSideListStore();
+  const { isOpen } = useSideBarStore();
 
   return SIDE_ITEMS.map(({ href, fillIcon, outlineIcon, title }) => (
     <li className={`${isOpen ? "px-3 mb-2 " : "px-4"}`} key={href}>

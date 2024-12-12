@@ -1,27 +1,34 @@
 "use client";
 
-import { useSideListStore } from "@/store/sideListStore";
+import { useSideBarStore } from "@/store/sideBarStore";
 import React, { useEffect, useRef } from "react";
 import SideLinkItem from "./SideLinkItem";
 import SideBookmark from "./SideBookmark";
 import SidePlaylist from "./SidePlaylist";
 
 const SideList = () => {
-  const { isOpen, closeSideList } = useSideListStore();
+  const { isOpen, closeSideBar } = useSideBarStore();
   const sideListRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (
+      const target = e.target as Node;
+
+      const hamburger = document.getElementById("hamburger");
+      const isClickOutside =
         sideListRef.current &&
-        !sideListRef.current.contains(e.target as Node)
-      ) {
-        closeSideList();
+        !sideListRef.current.contains(target) &&
+        hamburger &&
+        !hamburger.contains(target);
+
+      if (isClickOutside) {
+        closeSideBar();
       }
     };
+
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [closeSideList]);
+  }, [closeSideBar]);
 
   return (
     <ul
