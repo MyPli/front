@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .form-input {
+    @apply text-base p-4  w-full outline-none
+    font-medium border border-primary border-solid rounded-md
+    focus:ring-2 ring-primary;
+  }
+
+  .error-text {
+    @apply text-red-500 font-medium self-start;
+  }
+}
+
 @layer utilities {
   .flex-between {
     @apply flex justify-between items-center;
