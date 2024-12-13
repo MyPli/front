@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../commons/Modal";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import CreatePlaylist from "./TrackForAdd";
 import { TrackInfo, useMakePlaylist } from "@/store/useMakePlaylist";
+import { useForm } from "react-hook-form";
 
 const dummy = {
   imageUrl:
@@ -13,6 +14,10 @@ const dummy = {
   isAdded: false,
 };
 
+interface FormData {
+  searchText: string;
+}
+
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
@@ -20,6 +25,27 @@ interface IProps {
 
 const AddTrackModal = (props: IProps) => {
   const { addTrack } = useMakePlaylist();
+  const { register, watch, getValues } = useForm<FormData>({
+    mode: "onChange",
+  });
+
+  const [tracks, setTracks] = useState<TrackInfo[]>([]);
+
+  useEffect(() => {
+    const value = getValues("searchText");
+
+    if (value) {
+      setTracks(
+        tracks.filter(
+          (el) =>
+            el.artist.toLowerCase().includes(value) ||
+            el.title.toLowerCase().includes(value),
+        ),
+      );
+    } else {
+      setTracks([dummy, dummy, dummy, dummy, dummy]);
+    }
+  }, [watch("searchText")]);
 
   const handleAdd = (track: TrackInfo) => {
     addTrack(track);
@@ -36,10 +62,11 @@ const AddTrackModal = (props: IProps) => {
         <input
           className="w-[375px] h-[43px] outline-none border-b border-b-gray text-base text-black pr-9"
           placeholder="음악 또는 아티스트 검색하기"
+          {...register("searchText")}
         />
         <HiMagnifyingGlass className="fill-black w-5 h-5 absolute right-2 top-[50%] transform -translate-y-1/2" />
       </div>
-      {[dummy, dummy, dummy, dummy, dummy].map((item, i) => (
+      {tracks.map((item, i) => (
         <CreatePlaylist key={i} {...item} onAdd={() => handleAdd(item)} />
       ))}
     </Modal>
