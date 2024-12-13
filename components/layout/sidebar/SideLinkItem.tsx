@@ -35,7 +35,7 @@ const SIDE_ITEMS: sideItemProps[] = [
     outlineIcon: <IoAddCircleOutline className="w-full h-full" />,
     fillIcon: <IoAddCircle className="w-full h-full" />,
     title: "생성",
-    href: "/create",
+    href: "/playlist",
   },
 ];
 

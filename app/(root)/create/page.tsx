@@ -1,7 +1,8 @@
+import Create from "@/components/CreatePage/CreatePage";
 import React from "react";
 
-const Create = () => {
-  return <div>Create</div>;
+const CreatePlaylist = () => {
+  return <Create />;
 };
 
-export default Create;
+export default CreatePlaylist;
