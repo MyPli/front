@@ -13,9 +13,8 @@ const GnbMyPageModal = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewUrl(imageUrl);
+      setSelectedImage(URL.createObjectURL(file));
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
