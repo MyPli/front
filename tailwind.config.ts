@@ -1,5 +1,5 @@
-import type { Config } from 'tailwindcss';
-import scrollbarHide from 'tailwind-scrollbar-hide';
+import type { Config } from "tailwindcss";
+import scrollbarHide from "tailwind-scrollbar-hide";
 
 export default {
   content: [
@@ -15,6 +15,7 @@ export default {
       colors: {
         black: "#121212",
         primary: "#9400FF",
+        secondary: "#121212",
         sidebar: "#1D1D1D",
         gray: "#D9D9D9",
         divider: "#8E8E8E",
@@ -27,11 +28,11 @@ export default {
         mainTop: "91px",
         mainLeft: "102px",
       },
-			width: {
-				sideOpen: '220px',
-				sideClose: '96px',
-			},
-		},
-	},
-	plugins: [scrollbarHide],
+      width: {
+        sideOpen: "220px",
+        sideClose: "96px",
+      },
+    },
+  },
+  plugins: [scrollbarHide],
 } satisfies Config;
