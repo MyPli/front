@@ -2,25 +2,33 @@ import React from "react";
 import FormButton from "../../../commons/FormButton";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useGnbModalStore } from "@/store/gnbModalStore";
+import { useAuth } from "@/hooks/useAuth";
 
-interface SignInModalProps {
-  onClick: () => void;
-}
-
-interface IFormInput {
-  name: string;
+export interface SignUpProps {
+  nickname: string;
   email: string;
   password: string;
 }
 
-const GnbSignInModal = ({ onClick }: SignInModalProps) => {
+const GnbSignUpModal = () => {
+  const { openLoginModal, closeSignUpModal } = useGnbModalStore();
+  const { userSignUp } = useAuth();
+
+  const handleClick = () => {
+    closeSignUpModal();
+    openLoginModal();
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<SignUpProps>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<SignUpProps> = (data) => {
+    userSignUp(data);
+  };
 
   return (
     <div
@@ -47,9 +55,11 @@ const GnbSignInModal = ({ onClick }: SignInModalProps) => {
           placeholder="닉네임"
           type="string"
           className="form-input"
-          {...(register("name"), { required: true })}
+          {...(register("nickname"), { required: true })}
         />
-        {errors.name && <span className="error-text">이름을 확인해주세요</span>}
+        {errors.nickname && (
+          <span className="error-text">이름을 확인해주세요</span>
+        )}
         <input
           className="form-input"
           placeholder="비밀번호"
@@ -66,7 +76,7 @@ const GnbSignInModal = ({ onClick }: SignInModalProps) => {
       <h2>
         계정이 있으신가요?
         <span
-          onClick={onClick}
+          onClick={handleClick}
           className="underline underline-offset-4 font-semibold cursor-pointer"
         >
           {" "}
@@ -77,4 +87,4 @@ const GnbSignInModal = ({ onClick }: SignInModalProps) => {
   );
 };
 
-export default GnbSignInModal;
+export default GnbSignUpModal;

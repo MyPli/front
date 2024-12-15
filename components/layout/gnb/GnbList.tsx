@@ -2,37 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import SearchBar from "./GnbSearchForm";
 import HambugerMenu from "./GnbHambugerMenu";
 import Modal from "@/components/commons/Modal";
 import GnbLoginModal from "@/components/layout/gnb/modals/GnbLoginModal";
-import GnbSignInModal from "@/components/layout/gnb/modals/GnbSignInModal";
+import GnbSignUpModal from "@/components/layout/gnb/modals/GnbSignUpModal";
 import GnbMyPageModal from "@/components/layout/gnb/modals/GnbMyPageModal";
+import { useGnbModalStore } from "@/store/gnbModalStore";
 
 const GnbList = () => {
-  const [openMyPage, setOpenMyPage] = useState(false);
-  const [openLogin, setOpenLogin] = useState(false);
-  const [switchModal, setSwitchModal] = useState(false);
-
-  const onClose = () => {
-    setOpenLogin(false);
-    setSwitchModal(false);
-  };
+  const {
+    loginModal,
+    openLoginModal,
+    closeLoginModal,
+    signUpModal,
+    closeSignUpModal,
+    mypageModal,
+    openMypageModal,
+    closeMypageModal,
+  } = useGnbModalStore();
 
   return (
     <>
-      <Modal isOpen={openLogin} onClose={onClose}>
-        {switchModal ? (
-          <GnbSignInModal onClick={() => setSwitchModal(false)} />
-        ) : (
-          <GnbLoginModal onClick={() => setSwitchModal(true)} />
-        )}
+      <Modal isOpen={loginModal} onClose={closeLoginModal}>
+        <GnbLoginModal />
+      </Modal>
+      <Modal isOpen={signUpModal} onClose={closeSignUpModal}>
+        <GnbSignUpModal />
       </Modal>
 
       <Modal
-        isOpen={openMyPage}
-        onClose={() => setOpenMyPage(false)}
+        isOpen={mypageModal}
+        onClose={closeMypageModal}
         title="마이 페이지"
       >
         <GnbMyPageModal />
@@ -51,10 +53,10 @@ const GnbList = () => {
           <SearchBar />
         </li>
         <li className="flex flex-row gap-5">
-          <button onClick={() => setOpenMyPage(true)}>
+          <button onClick={openMypageModal}>
             <span>마이페이지</span>
           </button>
-          <button onClick={() => setOpenLogin(true)}>
+          <button onClick={openLoginModal}>
             <span>로그인</span>
           </button>
         </li>

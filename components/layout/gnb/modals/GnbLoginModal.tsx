@@ -1,33 +1,48 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import FormButton from "@/components/commons/FormButton";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useGnbModalStore } from "@/store/gnbModalStore";
+import { useAuth } from "@/hooks/useAuth";
 
-interface LoginModalProps {
-  onClick: () => void;
-}
-
-interface IFormInput {
+export interface LoginProps {
   email: string;
   password: string;
 }
 
-const GnbLoginModal = ({ onClick }: LoginModalProps) => {
+const GnbLoginModal = () => {
+  const { closeLoginModal, openSignUpModal } = useGnbModalStore();
+  const { userLogin } = useAuth();
+
+  const handleClick = () => {
+    closeLoginModal();
+    openSignUpModal();
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<LoginProps>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginProps> = (data) => {
+    userLogin(data);
+  };
 
   const googleOAuth = () => {
-    window.location.href =
-      "https://accounts.google.com/o/oauth2/auth?" +
-      `client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_KEY}&` +
-      `redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&` +
-      "response_type=token&" +
-      "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
+    const baseURL = "https://accounts.google.com/o/oauth2/auth";
+    const params = new URLSearchParams({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_KEY!,
+      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
+      response_type: "token",
+      scope:
+        "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+    });
+
+    const finalURL = `${baseURL}?${params.toString()}`;
+    window.location.href = finalURL;
   };
 
   return (
@@ -72,7 +87,7 @@ const GnbLoginModal = ({ onClick }: LoginModalProps) => {
       <h2>
         계정이 없으신가요?
         <span
-          onClick={onClick}
+          onClick={handleClick}
           className="underline underline-offset-4 font-semibold cursor-pointer"
         >
           {" "}
