@@ -1,40 +1,26 @@
 "use client";
 
-import { getProfile, patchProfile } from "@/action/mypage";
-import { queryClient } from "@/utils/ReactQueryProvider";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMyPageState } from "@/hooks/useMyPageState";
 import Image from "next/image";
-import React, { ChangeEvent, useEffect, useState, useTransition } from "react";
+import React, { ChangeEvent, useEffect, useState, /*useTransition*/ } from "react";
 import { IoCheckmark, IoPencil } from "react-icons/io5";
 
 const MyPageModal = () => {
+  const { edit, onEdit, profile } = useMyPageState();
+
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-  const [edit, setEdit] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
-
-  const { data } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
-
-  const mutation = useMutation({
-    mutationFn: patchProfile,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile"] }); // Refetch profile data
-      setEdit(false); // Exit edit mode
-    },
-  });
+  // const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    if (data && data.success) {
-      setNickname(data.success.nickname || "");
-      setEmail(data.success.email || "");
-      setPreviewImage(data.success.profileImage || "/AddImage.png");
+    if (profile && profile.success) {
+      setNickname(profile.success.nickname || "");
+      setEmail(profile.success.email || "");
+      setPreviewImage(profile.success.profileImage || "/AddImage.png");
     }
-  }, [data]);
+  }, [profile]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -54,7 +40,8 @@ const MyPageModal = () => {
   };
 
   const handleSave = (formData: FormData) => {
-    console.log("save");
+    console.log("save", profileImage);
+    console.log(formData);
     // formData.append("nickname", nickname);
     // if (profileImageFile) {
     //   formData.append("profileImage", profileImageFile);
@@ -75,7 +62,7 @@ const MyPageModal = () => {
         <button
           type="button"
           className="absolute right-[5rem] top-[1.6rem] z-40 text-black hover:bg-gray rounded-full flex-center p-2"
-          onClick={() => setEdit(true)}
+          onClick={onEdit}
         >
           <IoPencil className="w-4 h-4" />
         </button>

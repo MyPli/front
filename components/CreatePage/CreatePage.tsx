@@ -2,8 +2,8 @@
 
 import AddTrackModal from "@/components/CreatePage/AddTrackModal";
 import Track from "@/components/CreatePage/Track";
-import { useModal } from "@/hooks/useModal";
-import { PlaylistInfo, useMakePlaylist } from "@/store/useMakePlaylist";
+import { useModal } from "@/hooks/utils/useModal";
+import { PlaylistInfo, TrackInfo, useMakePlaylist } from "@/store/useMakePlaylist";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { KeyboardEvent, useRef, useState } from "react";
@@ -75,9 +75,8 @@ const Create = ({ isEditMode }: IProps) => {
       reader.readAsDataURL(file);
     }
   };
-
   const calculateTotalTime = () => {
-    let totalSeconds = tracks.reduce((acc, track) => {
+    let totalSeconds = tracks.reduce((acc: number, track: { time: string }) => {
       const [minutes, seconds] = track.time.split(":").map(Number);
       return acc + minutes * 60 + seconds;
     }, 0);
@@ -206,7 +205,7 @@ const Create = ({ isEditMode }: IProps) => {
           </div>
           <div className="w-full flex flex-col items-center mt-[55px]">
             {tracks.length ? (
-              tracks.map((track, i) => (
+              tracks.map((track: TrackInfo, i: number) => (
                 <Track
                   key={i}
                   {...track}
