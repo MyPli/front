@@ -1,34 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useActionState, useEffect } from "react";
 import FormButton from "@/components/commons/FormButton";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useGnbModalStore } from "@/store/gnbModalStore";
-import { useAuth } from "@/hooks/useAuth";
+import { login } from "@/action/login";
+import { useLoginModalStore } from "@/store/loginModalStore";
+import { useSignUpModalStore } from "@/store/signUpModalStore";
+import FormInput from "../commons/FormInput";
 
 export interface LoginProps {
   email: string;
   password: string;
 }
 
-const GnbLoginModal = () => {
-  const { closeLoginModal, openSignUpModal } = useGnbModalStore();
-  const { userLogin } = useAuth();
+const LoginModal = () => {
+  const { closeLoginModal } = useLoginModalStore();
+  const { openSignUpModal } = useSignUpModalStore();
+
+  const [state, action, pending] = useActionState(login, undefined);
+
+  useEffect(() => {
+    if (state && !state.errors) {
+      closeLoginModal();
+    }
+  }, [state, closeLoginModal]);
 
   const handleClick = () => {
     closeLoginModal();
     openSignUpModal();
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginProps>();
-
-  const onSubmit: SubmitHandler<LoginProps> = (data) => {
-    userLogin(data);
   };
 
   const googleOAuth = () => {
@@ -52,30 +51,20 @@ const GnbLoginModal = () => {
     >
       <Image src="/MyPli.png" alt="로고" width={90} height={30} />
       <h1 className="text-lg">로그인 </h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-4 w-full"
-      >
-        <input
+      <form action={action} className="flex flex-col items-center gap-4 w-full">
+        <FormInput
           placeholder="이메일"
           type="email"
-          className="form-input"
-          {...(register("email"), { required: true })}
+          name="email"
+          errors={state?.errors?.email}
         />
-        {errors.email && (
-          <span className="error-text">이메일을 확인해주세요</span>
-        )}
-        <input
-          className="form-input"
+        <FormInput
           placeholder="비밀번호"
           type="password"
-          {...(register("password"), { required: true })}
+          name="password"
+          errors={state?.errors?.password}
         />
-        {errors.email && (
-          <span className="error-text">비밀번호를 확인해주세요</span>
-        )}
-
-        <FormButton size="large" color="primary">
+        <FormButton size="large" color="primary" disabled={pending}>
           <span>로그인</span>
         </FormButton>
       </form>
@@ -98,4 +87,4 @@ const GnbLoginModal = () => {
   );
 };
 
-export default GnbLoginModal;
+export default LoginModal;
