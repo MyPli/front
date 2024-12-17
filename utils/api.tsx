@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type METHOD = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+import { getAccessToken } from "@/action/login";
+
+type METHOD = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
 interface APIOptions {
   headers?: Record<string, string>;
@@ -15,18 +17,23 @@ const createAPI = async (
   options: APIOptions = {},
 ) => {
   const { headers = {}, body, ...restOptions } = options;
+  const token = getAccessToken();
+  const preventToken = ["/auth/login", "/auth/signup"];
 
   const res = await fetch(BASE_URL + endpoint, {
     method,
     headers: {
       "Content-Type": "application/json",
+      ...(!preventToken.includes(endpoint) && {
+        Authorization: `Bearer ${token}`,
+      }),
       ...headers,
     },
     body,
     ...restOptions,
-	});
-	
-	if (!res.ok) {
+  });
+
+  if (!res.ok) {
     const error = new Error("API Error");
     throw error;
   }

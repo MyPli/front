@@ -1,18 +1,11 @@
 "use server";
 
 import { MypageFormSchema } from "@/models/mypage.model";
-import { getAccessToken } from "./login";
 import { api } from '@/utils/api';
 
 export const getProfile = async () => {
-  const accessToken = getAccessToken();
-
   try {
-    const res = await api.get(`/users/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await api.get(`/users/me`);
 
     if (!res.ok) {
       if (res.status === 401) {
@@ -32,8 +25,6 @@ export const getProfile = async () => {
 };
 
 export const patchProfile = async (formData: FormData) => {
-  const accessToken = getAccessToken();
-
   const validatedFields = MypageFormSchema.safeParse({
     nickname: formData.get("nickname"),
     profileImage: formData.get("profileImage"),
@@ -49,9 +40,6 @@ export const patchProfile = async (formData: FormData) => {
 
   try {
     const res = await api.post("/users/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
       body: JSON.stringify({ nickname, profileImage }),
     });
 
