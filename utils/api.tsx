@@ -33,11 +33,6 @@ const createAPI = async (
     ...restOptions,
   });
 
-  if (!res.ok) {
-    const error = new Error("API Error");
-    throw error;
-  }
-
   return res;
 };
 
