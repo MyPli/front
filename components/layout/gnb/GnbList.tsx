@@ -2,40 +2,38 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import SearchBar from "./GnbSearchForm";
 import HambugerMenu from "./GnbHambugerMenu";
 import Modal from "@/components/commons/Modal";
-import GnbLoginModal from "@/components/layout/gnb/modals/GnbLoginModal";
-import GnbSignInModal from "@/components/layout/gnb/modals/GnbSignInModal";
-import GnbMyPageModal from "@/components/layout/gnb/modals/GnbMyPageModal";
+import { useLoginModalStore } from "@/store/loginModalStore";
+import { useSignUpModalStore } from "@/store/signUpModalStore";
+import { useMypageModalModalStore } from "@/store/myPageModalStore";
+import LoginModal from "@/components/modals/LoginModal";
+import SignUpModal from "@/components/modals/SignUpModal";
+import MyPageModal from "@/components/modals/MyPageModal";
 
 const GnbList = () => {
-  const [openMyPage, setOpenMyPage] = useState(false);
-  const [openLogin, setOpenLogin] = useState(false);
-  const [switchModal, setSwitchModal] = useState(false);
-
-  const onClose = () => {
-    setOpenLogin(false);
-    setSwitchModal(false);
-  };
+  const { loginModal, openLoginModal, closeLoginModal } = useLoginModalStore();
+  const { signUpModal, closeSignUpModal } = useSignUpModalStore();
+  const { mypageModal, openMypageModal, closeMypageModal } =
+    useMypageModalModalStore();
 
   return (
     <>
-      <Modal isOpen={openLogin} onClose={onClose}>
-        {switchModal ? (
-          <GnbSignInModal onClick={() => setSwitchModal(false)} />
-        ) : (
-          <GnbLoginModal onClick={() => setSwitchModal(true)} />
-        )}
+      <Modal isOpen={loginModal} onClose={closeLoginModal}>
+        <LoginModal />
+      </Modal>
+      <Modal isOpen={signUpModal} onClose={closeSignUpModal}>
+        <SignUpModal />
       </Modal>
 
       <Modal
-        isOpen={openMyPage}
-        onClose={() => setOpenMyPage(false)}
+        isOpen={mypageModal}
+        onClose={closeMypageModal}
         title="마이 페이지"
       >
-        <GnbMyPageModal />
+        <MyPageModal />
       </Modal>
       <ul
         className="pr-8 pl-6 py-5 flex items-center justify-between 
@@ -51,10 +49,10 @@ const GnbList = () => {
           <SearchBar />
         </li>
         <li className="flex flex-row gap-5">
-          <button onClick={() => setOpenMyPage(true)}>
+          <button onClick={openMypageModal}>
             <span>마이페이지</span>
           </button>
-          <button onClick={() => setOpenLogin(true)}>
+          <button onClick={openLoginModal}>
             <span>로그인</span>
           </button>
         </li>

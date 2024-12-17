@@ -9,6 +9,8 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./api/**/*.{js,ts,jsx,tsx,mdx}",
+    "./model/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
