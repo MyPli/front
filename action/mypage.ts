@@ -8,8 +8,7 @@ export const getProfile = async () => {
   const accessToken = getAccessToken();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
-      method: "GET",
+    const res = await api.get(`/users/me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
