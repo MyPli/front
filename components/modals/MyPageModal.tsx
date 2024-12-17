@@ -6,7 +6,7 @@ import React, { ChangeEvent, useEffect, useState, /*useTransition*/ } from "reac
 import { IoCheckmark, IoPencil } from "react-icons/io5";
 
 const MyPageModal = () => {
-  const { edit, onEdit, profile, updateProfile } = useMyPageState();
+  const { edit, onEdit, profile } = useMyPageState();
 
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState("");
@@ -40,7 +40,8 @@ const MyPageModal = () => {
   };
 
   const handleSave = (formData: FormData) => {
-    console.log("save");
+    console.log("save", profileImage);
+    console.log(formData);
     // formData.append("nickname", nickname);
     // if (profileImageFile) {
     //   formData.append("profileImage", profileImageFile);
