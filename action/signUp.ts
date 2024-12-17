@@ -1,7 +1,7 @@
 "use server";
-"use server";
 
 import { SignUpFormSchema, SignUpFormState } from "@/models/signUp.model";
+import { api } from '@/utils/api';
 
 export const signUp = async (
   state: SignUpFormState | undefined,
@@ -22,11 +22,9 @@ export const signUp = async (
   const { email, password, nickname } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/signup`, {
-      method: "POST",
+    const res = await api.post("/auth/signup", {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password, nickname }),
     });

@@ -1,6 +1,7 @@
 "use server";
 
 import { LoginFormSchema, LoginFormState } from "@/models/login.model";
+import { api } from '@/utils/api';
 import { cookies } from "next/headers";
 
 export const login = async (
@@ -21,13 +22,11 @@ export const login = async (
   const { email, password } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, {
-      method: "POST",
+    const res = await api.post("/auth/login", {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({email, password})
     });
 
     if (!res.ok) {

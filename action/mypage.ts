@@ -2,6 +2,7 @@
 
 import { MypageFormSchema } from "@/models/mypage.model";
 import { getAccessToken } from "./login";
+import { api } from '@/utils/api';
 
 export const getProfile = async () => {
   const accessToken = getAccessToken();
@@ -48,10 +49,8 @@ export const patchProfile = async (formData: FormData) => {
   const { nickname, profileImage } = validatedFields.data;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
-      method: "PATCH",
+    const res = await api.post("/users/me", {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({ nickname, profileImage }),
