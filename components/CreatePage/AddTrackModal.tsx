@@ -1,60 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Modal from "../commons/Modal";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import CreatePlaylist from "./TrackForAdd";
-import { TrackInfo, useMakePlaylist } from "@/store/useMakePlaylist";
 import { useForm } from "react-hook-form";
-
-const dummy = {
-  imageUrl:
-    "https://i.ytimg.com/vi/doBSwtsiHB4/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDH5Yamyr8PfggjyaTqGC5ucNR-Mw",
-  title: "Whiplash",
-  artist: "에스파",
-  time: "3:11",
-  isAdded: false,
-};
+import { useSearch, YoutubePlaylist } from '@/hooks/queries/useSearch';
+import { usePlaylist } from '@/hooks/usePlaylistState';
+import { useAddVideoModalStore } from '@/store/addVideModalStore';
 
 interface FormData {
   searchText: string;
 }
 
 interface IProps {
-  isOpen: boolean;
-  onClose: () => void;
+  playlistId: number;
 }
 
-const AddTrackModal = (props: IProps) => {
-  const { addTrack } = useMakePlaylist();
+const AddTrackModal = ({playlistId}: IProps) => {
   const { register, watch, getValues } = useForm<FormData>({
     mode: "onChange",
   });
-
-  const [tracks, setTracks] = useState<TrackInfo[]>([]);
+  const { data: searchResult, refetch, isLoading } = useSearch(getValues('searchText'));
+  const { addVideo } = usePlaylist(playlistId);
+  const {isAddModalOpen, closeAddModal } = useAddVideoModalStore();
 
   useEffect(() => {
-    const value = getValues("searchText");
-
-    if (value) {
-      setTracks(
-        tracks.filter(
-          (el) =>
-            el.artist.toLowerCase().includes(value) ||
-            el.title.toLowerCase().includes(value),
-        ),
-      );
-    } else {
-      setTracks([dummy, dummy, dummy, dummy, dummy]);
-    }
+    refetch();
   }, [watch("searchText")]);
 
-  const handleAdd = (track: TrackInfo) => {
-    addTrack(track);
-    props.onClose();
-  };
+  const handleAddVideo = (item: YoutubePlaylist) => {
+    // TODO: addVideo API 수정되면 이것도 수정
+    addVideo({ ...item })
+    closeAddModal();
+  }
 
   return (
     <Modal
-      {...props}
+      isOpen={isAddModalOpen}
+      onClose={closeAddModal}
       title="플레이리스트에 음악 추가하기"
       className="w-[647px] h-[812px]"
     >
@@ -66,9 +48,19 @@ const AddTrackModal = (props: IProps) => {
         />
         <HiMagnifyingGlass className="fill-black w-5 h-5 absolute right-2 top-[50%] transform -translate-y-1/2" />
       </div>
-      {tracks.map((item, i) => (
-        <CreatePlaylist key={i} {...item} onAdd={() => handleAdd(item)} />
-      ))}
+      <div className="h-[620px] overflow-auto">
+        {searchResult?.youtubePlaylists.map((item, i) => (
+          <CreatePlaylist
+            key={i}
+            {...item}
+            onAdd={() => handleAddVideo(item)}
+          />
+        ))}
+        {!searchResult?.youtubePlaylists.length && (
+          <span>검색 결과가 없습니다.</span>
+        )}
+        {isLoading && <span>검색 중...</span>}
+      </div>
     </Modal>
   );
 };
