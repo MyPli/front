@@ -8,7 +8,7 @@ export interface PlayList {
 }
 
 interface IProps extends PlayList {
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 const Track = ({ onDelete, ...props }: IProps) => {
