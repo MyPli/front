@@ -3,7 +3,7 @@ import Title from '@/components/commons/Title';
 import React from 'react';
 
 const dummy = {
-	link: '',
+	playlistId: 1,
 	imageUrl:
 		'https://i.ytimg.com/vi/jVNyKwF5wL8/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDnsEqKhhEYiP2E0stj3lq9Zj1Qgg',
 	title: '[KPOP Playlist] 짧은 케이팝 노동요',

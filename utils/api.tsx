@@ -20,7 +20,7 @@ const createAPI = async (
   const token = getAccessToken();
   const preventToken = ["/auth/login", "/auth/signup"];
 
-  const res = await fetch(BASE_URL + endpoint, {
+  const res = await fetch(`${BASE_URL}/api${endpoint}`, {
     method,
     headers: {
       "Content-Type": "application/json",
