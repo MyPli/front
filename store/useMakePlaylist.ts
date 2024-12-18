@@ -1,3 +1,4 @@
+import { Tag } from '@/models/playlist.model';
 import { create } from "zustand";
 
 export type TrackInfo = {
@@ -10,8 +11,8 @@ export type TrackInfo = {
 
 export type PlaylistInfo = {
   title: string;
-  imageUrl: string;
-  tags: string[];
+  coverImage: string;
+  tags: Tag[];
   totalTime: string;
   count: number;
 };
@@ -29,7 +30,7 @@ interface StoreState {
 export const useMakePlaylist = create<StoreState>((set) => ({
   playlistInfo: {
     title: "",
-    imageUrl: "",
+    coverImage: "",
     tags: [],
     totalTime: "",
     count: 0,
@@ -58,7 +59,7 @@ export const useMakePlaylist = create<StoreState>((set) => ({
       tracks: [],
       playlistInfo: {
         title: "",
-        imageUrl: "",
+        coverImage: "",
         tags: [],
         totalTime: "",
         count: 0,
