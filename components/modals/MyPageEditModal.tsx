@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { IoCheckmark, IoPencil } from "react-icons/io5";
 
-const MyPageModal = () => {
+const MyPageEditModal = () => {
   const { edit, onEdit, profile } = useMyPageState();
 
   const [nickname, setNickname] = useState<string>("");
@@ -130,4 +130,4 @@ const MyPageModal = () => {
   );
 };
 
-export default MyPageModal;
+export default MyPageEditModal;

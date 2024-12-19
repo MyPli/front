@@ -1,11 +1,11 @@
 "use server";
 
 import { LoginFormSchema, LoginFormState } from "@/models/login.model";
-import { api } from '@/utils/api';
+import { api } from "@/utils/api";
 import { cookies } from "next/headers";
 
 export const login = async (
-  state: LoginFormState | undefined,
+  state: LoginFormState | null,
   formData: FormData,
 ): Promise<LoginFormState> => {
   const validatedFields = LoginFormSchema.safeParse({
@@ -26,7 +26,7 @@ export const login = async (
       headers: {
         Accept: "application/json",
       },
-      body: JSON.stringify({email, password})
+      body: JSON.stringify({ email, password }),
     });
 
     if (!res.ok) {
@@ -52,7 +52,7 @@ export const login = async (
       maxAge: 60 * 60 * 24 * 7, // One week
       path: "/",
     });
-    return { errors: {} };
+    return json;
   } catch (error) {
     console.log("네트워크 에러", error);
     return {
@@ -76,4 +76,45 @@ export const getAccessToken = async () => {
 
 export const getRefreshToken = async () => {
   return getCookieValue("refreshToken");
+};
+
+export const logout = async () => {
+  try {
+    const res = await api.post("/auth/logout");
+    const json = await res.json();
+
+    if (!res.ok) {
+      return {
+        errors: { message: "유효하지 않거나 만료된 토큰입니다." },
+      };
+    }
+
+    await resetAuthCookies();
+    return { message: json.message };
+  } catch (error) {
+    console.log("네트워크 에러", error);
+    return {
+      errors: { message: "네트워크 오류가 발생했습니다" },
+    };
+  }
+};
+
+export const googleLogin = async () => {
+  try {
+    const res = await api.get("/auth/google");
+    const json = await res.json();
+
+    if (!res.ok) {
+      return {
+        errors: { message: "api 오류." },
+      };
+    }
+
+    return json;
+  } catch (error) {
+    console.log("네트워크 에러", error);
+    return {
+      errors: { message: "네트워크 오류가 발생했습니다" },
+    };
+  }
 };

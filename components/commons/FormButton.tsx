@@ -1,25 +1,21 @@
 "use client";
 
 import React from "react";
+import { useFormStatus } from "react-dom";
 
 interface FormButtonProps {
   color: "primary" | "white";
   size: "large" | "small";
   onClick?: () => void;
-  disabled?: boolean;
   children: React.ReactNode;
 }
 
-const FormButton = ({
-  children,
-  color,
-  size,
-  onClick,
-  disabled,
-}: FormButtonProps) => {
+const FormButton = ({ children, color, size, onClick }: FormButtonProps) => {
+  const { pending } = useFormStatus();
+
   return (
     <button
-      disabled={disabled}
+      disabled={pending}
       onClick={onClick}
       className={`text-center  rounded-md 
         ${

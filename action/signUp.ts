@@ -1,10 +1,10 @@
 "use server";
 
 import { SignUpFormSchema, SignUpFormState } from "@/models/signUp.model";
-import { api } from '@/utils/api';
+import { api } from "@/utils/api";
 
 export const signUp = async (
-  state: SignUpFormState | undefined,
+  prevState: SignUpFormState | null,
   formData: FormData,
 ): Promise<SignUpFormState> => {
   const validatedFields = SignUpFormSchema.safeParse({
@@ -23,9 +23,6 @@ export const signUp = async (
 
   try {
     const res = await api.post("/auth/signup", {
-      headers: {
-        Accept: "application/json",
-      },
       body: JSON.stringify({ email, password, nickname }),
     });
 
@@ -42,7 +39,7 @@ export const signUp = async (
     }
 
     const json = await res.json();
-    return { success: json.message };
+    return json.message;
   } catch (error) {
     console.log("네트워크 에러", error);
     return {

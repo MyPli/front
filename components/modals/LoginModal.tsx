@@ -3,10 +3,11 @@
 import Image from "next/image";
 import React, { useActionState, useEffect } from "react";
 import FormButton from "@/components/commons/FormButton";
-import { login } from "@/action/login";
+import { googleLogin, login } from "@/action/login";
 import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
+import { useLoginButtonState } from "@/hooks/useLoginButtonState";
 
 export interface LoginProps {
   email: string;
@@ -16,14 +17,17 @@ export interface LoginProps {
 const LoginModal = () => {
   const { closeLoginModal } = useLoginModalStore();
   const { openSignUpModal } = useSignUpModalStore();
+  const { loggedIn } = useLoginButtonState();
 
-  const [state, action, pending] = useActionState(login, undefined);
+  const [state, action] = useActionState(login, null);
 
   useEffect(() => {
     if (state && !state.errors) {
+      alert("로그인 성공");
+      loggedIn();
       closeLoginModal();
     }
-  }, [state, closeLoginModal]);
+  }, [state, closeLoginModal, loggedIn]);
 
   const handleClick = () => {
     closeLoginModal();
@@ -64,13 +68,13 @@ const LoginModal = () => {
           name="password"
           errors={state?.errors?.password}
         />
-        <FormButton size="large" color="primary" disabled={pending}>
+        <FormButton size="large" color="primary">
           <span>로그인</span>
         </FormButton>
       </form>
 
       <div className="bg-gray w-full h-[1px]" />
-      <FormButton size="large" color="white" onClick={googleOAuth}>
+      <FormButton size="large" color="white" onClick={googleLogin}>
         <span>구글 로그인</span>
       </FormButton>
       <h2>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "./GnbSearchForm";
 import HambugerMenu from "./GnbHambugerMenu";
 import Modal from "@/components/commons/Modal";
@@ -12,12 +12,29 @@ import { useMypageModalModalStore } from "@/store/myPageModalStore";
 import LoginModal from "@/components/modals/LoginModal";
 import SignUpModal from "@/components/modals/SignUpModal";
 import MyPageModal from "@/components/modals/MyPageModal";
+import { logout } from "@/action/login";
+import { useRouter } from "next/navigation";
+import { useLoginButtonState } from "@/hooks/useLoginButtonState";
 
 const GnbList = () => {
   const { loginModal, openLoginModal, closeLoginModal } = useLoginModalStore();
   const { signUpModal, closeSignUpModal } = useSignUpModalStore();
   const { mypageModal, openMypageModal, closeMypageModal } =
     useMypageModalModalStore();
+  const { isLoggedIn, loggedOut } = useLoginButtonState();
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.errors) {
+      alert(result.errors.message);
+    } else {
+      loggedOut();
+      alert("로그아웃 되었습니다");
+      router.push("/");
+    }
+  };
 
   return (
     <>
@@ -42,7 +59,13 @@ const GnbList = () => {
         <li className="flex flex-row gap-8 items-center">
           <HambugerMenu />
           <Link href="/">
-            <Image src="/MyPli.png" alt="로고" width={93} height={30} />
+            <Image
+              src="/MyPli.png"
+              alt="로고"
+              width={93}
+              height={30}
+              style={{ height: "auto" }}
+            />
           </Link>
         </li>
         <li className="w-2/6">
@@ -52,9 +75,15 @@ const GnbList = () => {
           <button onClick={openMypageModal}>
             <span>마이페이지</span>
           </button>
-          <button onClick={openLoginModal}>
-            <span>로그인</span>
-          </button>
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>
+              <span>로그아웃</span>
+            </button>
+          ) : (
+            <button onClick={openLoginModal}>
+              <span>로그인</span>
+            </button>
+          )}
         </li>
       </ul>
     </>

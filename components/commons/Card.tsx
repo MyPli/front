@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { Playlist } from '@/models/playlist.model';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { IoPlaySharp } from 'react-icons/io5';
+import { Playlist } from "@/models/playlist.model";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+import { IoPlaySharp } from "react-icons/io5";
 
 interface IProps extends Playlist {
-	size?: 'large' | 'small';
+  size?: "large" | "small";
 }
 
-const Card = ({ size = 'large', ...props }: IProps) => {
-	const [isHovered, setIsHovered] = useState(false);
+const Card = ({ size = "large", ...props }: IProps) => {
+  const [isHovered, setIsHovered] = useState(false);
 
-	return (
+  return (
     <Link
       href={`/playlist/${props.id}`}
       className={`flex flex-col cursor-pointer relative`}
@@ -23,11 +23,13 @@ const Card = ({ size = 'large', ...props }: IProps) => {
       <div className={`relative ${size === "small" ? "w-full" : ""}`}>
         {isHovered && (
           <div className="w-full h-full bg-black absolute backdrop-blur-sm top-0 left-0 flex justify-center items-center opacity-70 z-50">
-            <IoPlaySharp size={size === 'large' ? 87 : 60} />
+            <IoPlaySharp size={size === "large" ? 87 : 60} />
           </div>
         )}
         {props.coverImage ? (
-          <img
+          <Image
+            width={640}
+            height={360}
             src={props.coverImage}
             alt={props.title}
             className={`rounded-2xl object-cover object-top w-full h-full ${
@@ -40,7 +42,12 @@ const Card = ({ size = 'large', ...props }: IProps) => {
               size === "large" ? "aspect-video" : "aspect-square"
             }`}
           >
-            <Image src="/logo-gray.png" alt="logos for no cover images" width={100} height={50} />
+            <Image
+              src="/logo-gray.png"
+              alt="logos for no cover images"
+              width={100}
+              height={50}
+            />
           </div>
         )}
       </div>
