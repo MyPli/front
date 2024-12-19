@@ -4,7 +4,7 @@ import { SignUpFormSchema, SignUpFormState } from "@/models/signUp.model";
 import { api } from "@/utils/api";
 
 export const signUp = async (
-  prevState: SignUpFormState | null,
+  state: SignUpFormState | null,
   formData: FormData,
 ): Promise<SignUpFormState> => {
   const validatedFields = SignUpFormSchema.safeParse({

@@ -82,14 +82,8 @@ export const logout = async () => {
   try {
     const res = await api.post("/auth/logout");
     const json = await res.json();
-
-    if (!res.ok) {
-      return {
-        errors: { message: "유효하지 않거나 만료된 토큰입니다." },
-      };
-    }
-
     await resetAuthCookies();
+
     return { message: json.message };
   } catch (error) {
     console.log("네트워크 에러", error);

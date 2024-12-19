@@ -1,15 +1,27 @@
-import { useState } from 'react';
-import { useGetProfile, useUpdateProfile } from './queries/useMyPage';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getProfile, patchProfile } from "@/action/mypage";
+import { useMypageEditModalStore } from "@/store/myPageEditModalStore";
+import { queryClient } from "@/utils/ReactQueryProvider";
 
 export const useMyPageState = () => {
-	const [edit, setEdit] = useState(false);
+  const { closeMypageEditModal } = useMypageEditModalStore();
 
-  const { data: profile } = useGetProfile();
-  const { mutate: updateProfile } = useUpdateProfile({
-    successHandler: () => setEdit(false)
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
   });
-	
-	const editHandler = () => setEdit(true);
-	
-	return { edit, profile, updateProfile, onEdit: editHandler };
-}
+
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: patchProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      alert("수정했습니다");
+      closeMypageEditModal();
+    },
+    onError: (error) => {
+      alert(`프로필 수정 실패: ${error.message}`);
+    },
+  });
+
+  return { profile, updateProfile };
+};

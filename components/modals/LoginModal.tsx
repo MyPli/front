@@ -8,6 +8,7 @@ import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
 import { useLoginButtonState } from "@/hooks/useLoginButtonState";
+import { useAuthStore } from "@/store/authStore";
 
 export interface LoginProps {
   email: string;
@@ -17,17 +18,18 @@ export interface LoginProps {
 const LoginModal = () => {
   const { closeLoginModal } = useLoginModalStore();
   const { openSignUpModal } = useSignUpModalStore();
-  const { loggedIn } = useLoginButtonState();
+  const { storeLogin } = useAuthStore();
 
   const [state, action] = useActionState(login, null);
 
   useEffect(() => {
     if (state && !state.errors) {
       alert("로그인 성공");
-      loggedIn();
+      storeLogin();
+
       closeLoginModal();
     }
-  }, [state, closeLoginModal, loggedIn]);
+  }, [state, closeLoginModal]);
 
   const handleClick = () => {
     closeLoginModal();

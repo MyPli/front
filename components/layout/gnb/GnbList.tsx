@@ -2,26 +2,31 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SearchBar from "./GnbSearchForm";
 import HambugerMenu from "./GnbHambugerMenu";
 import Modal from "@/components/commons/Modal";
 import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
-import { useMypageModalModalStore } from "@/store/myPageModalStore";
+import { useMypageModalStore } from "@/store/myPageModalStore";
 import LoginModal from "@/components/modals/LoginModal";
 import SignUpModal from "@/components/modals/SignUpModal";
 import MyPageModal from "@/components/modals/MyPageModal";
 import { logout } from "@/action/login";
 import { useRouter } from "next/navigation";
-import { useLoginButtonState } from "@/hooks/useLoginButtonState";
+import { useAuthStore } from "@/store/authStore";
+import { useMypageEditModalStore } from "@/store/myPageEditModalStore";
+import MyPageEditModal from "@/components/modals/MyPageEditModal";
 
 const GnbList = () => {
   const { loginModal, openLoginModal, closeLoginModal } = useLoginModalStore();
   const { signUpModal, closeSignUpModal } = useSignUpModalStore();
   const { mypageModal, openMypageModal, closeMypageModal } =
-    useMypageModalModalStore();
-  const { isLoggedIn, loggedOut } = useLoginButtonState();
+    useMypageModalStore();
+
+  const { mypageEditModal, closeMypageEditModal } = useMypageEditModalStore();
+
+  const { isloggedIn, storeLogout } = useAuthStore();
 
   const router = useRouter();
 
@@ -30,7 +35,7 @@ const GnbList = () => {
     if (result.errors) {
       alert(result.errors.message);
     } else {
-      loggedOut();
+      storeLogout();
       alert("로그아웃 되었습니다");
       router.push("/");
     }
@@ -51,6 +56,14 @@ const GnbList = () => {
         title="마이 페이지"
       >
         <MyPageModal />
+      </Modal>
+
+      <Modal
+        isOpen={mypageEditModal}
+        onClose={closeMypageEditModal}
+        title="편집"
+      >
+        <MyPageEditModal />
       </Modal>
       <ul
         className="pr-8 pl-6 py-5 flex items-center justify-between 
@@ -75,7 +88,7 @@ const GnbList = () => {
           <button onClick={openMypageModal}>
             <span>마이페이지</span>
           </button>
-          {isLoggedIn ? (
+          {isloggedIn ? (
             <button onClick={handleLogout}>
               <span>로그아웃</span>
             </button>
