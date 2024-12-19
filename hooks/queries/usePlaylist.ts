@@ -1,4 +1,7 @@
-import { addVideoToPlaylist, deletePlaylist, getPlaylistDetail, updatePlaylistDetail } from '@/action/playlist'
+'use client'
+
+import { addVideoToPlaylist, deletePlaylist, getLatestPlaylists, getPlaylistDetail, getPopularPlaylists, updatePlaylistDetail } from '@/action/playlist'
+import { Playlist } from '@/models/playlist.model'
 import { queryClient } from '@/utils/ReactQueryProvider'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
@@ -42,9 +45,25 @@ const useAddVideo = () => {
   });
 }
 
+const useGetLatestPlaylists = () => {
+  return useQuery<Playlist[]>({
+    queryKey: ["latest-playlists"],
+    queryFn: getLatestPlaylists,
+  });
+}
+
+const useGetPopularPlaylists = () => {
+  return useQuery<Playlist[]>({
+    queryKey: ["popular-playlistst"],
+    queryFn: getPopularPlaylists
+  });
+}
+
 export {
   useGetPlaylistDetail,
   useUpdatePlaylist,
   useDeletePlaylsit,
   useAddVideo,
+  useGetLatestPlaylists,
+  useGetPopularPlaylists,
 };
