@@ -2,11 +2,11 @@ import { useDeletePlaylistStore } from '@/store/useDeletePlaylistStore';
 import React from 'react';
 import Modal from '../commons/Modal';
 import Button from '../commons/Button';
-import { usePlaylist } from '@/hooks/usePlaylistState';
+import { usePlaylistState } from '@/hooks/usePlaylistState';
 
 const DeletePlaylistModal = ({ playlistId }: { playlistId: number }) => {
   const { isDeleteModalOpen, closeDeleteModal } = useDeletePlaylistStore();
-  const { deletePlaylist } = usePlaylist(playlistId);
+  const { deletePlaylist } = usePlaylistState(playlistId);
 
   return (
     <Modal

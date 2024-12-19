@@ -2,7 +2,7 @@
 
 import AddTrackModal from "@/components/CreatePage/AddTrackModal";
 import Track from "@/components/CreatePage/Track";
-import { usePlaylist } from '@/hooks/usePlaylistState';
+import { usePlaylistState } from '@/hooks/usePlaylistState';
 import { PlaylistInfo, TrackInfo, useMakePlaylist } from "@/store/useMakePlaylist";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ const Create = ({isEditMode}: IProps) => {
   const { isAddModalOpen, openAddModal } = useAddVideoModalStore();
   const { playlistInfo, setPlaylistInfo, tracks, removeTrack, clearPlaylist } =
     useMakePlaylist();
-  const { updatePlaylist } = usePlaylist(playlistId);
+  const { updatePlaylist } = usePlaylistState(playlistId);
 
   const [inputs, setInputs] = useState<
     Pick<PlaylistInfo, "title" | "coverImage" | "tags">
