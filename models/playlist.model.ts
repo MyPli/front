@@ -7,10 +7,11 @@ export interface Video {
 
 export interface PlaylistDetail {
   id: number;
-  userId: number;
   title: string;
   description: string;
   coverImage: string | null;
+  createdBy: string;
+  totalTime: string;
   likesCount: number;
   createdAt: string;
   updatedAt: string;

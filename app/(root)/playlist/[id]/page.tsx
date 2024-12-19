@@ -67,7 +67,7 @@ const DetailPlaylist = () => {
                 className="w-[300px] h-[300px] cursor-pointer rounded-full object-cover"
               />
               <div className="min-w-[504px] relative flex flex-col justify-center">
-                <span className="text-[16px] cursor-pointer">홍길동</span>
+                <span className="text-[16px] cursor-pointer">{playlistData?.createdBy}</span>
                 <h3 className="text-[30px] max-h-[120px] mb-6 mt-2">
                   {playlistData?.title as string}
                 </h3>
@@ -82,8 +82,7 @@ const DetailPlaylist = () => {
                     ))}
                   </div>
                   <div className="flex gap-[20px] text-white text-[16px]">
-                    {/* TODO: 총 시간 없으니까 백엔드에 요청하기 */}
-                    {/* <span>총 시간 {playlistData?.totalTime}</span> */}
+                    <span>총 시간 {playlistData?.totalTime}</span>
                     <span>곡 수: {playlistData?.videos.length}곡</span>
                   </div>
                 </div>
