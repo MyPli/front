@@ -3,13 +3,14 @@
 import Button from '@/components/commons/Button';
 import Track from '@/components/CreatePage/Track';
 import DeletePlaylistModal from '@/components/modals/DeletePlaylistModal';
-import { usePlaylist } from '@/hooks/usePlaylistState';
+import { usePlaylistState } from '@/hooks/usePlaylistState';
+import { Video } from '@/models/playlist.model';
+import { useControlPlayingStore } from '@/store/playStore';
 import { useDeletePlaylistStore } from '@/store/useDeletePlaylistStore';
-import { TrackInfo, useMakePlaylist } from '@/store/useMakePlaylist';
+import { useMakePlaylist } from '@/store/useMakePlaylist';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from "react";
-import { IoArrowDown, IoArrowUp, IoPlaySharp } from 'react-icons/io5';
+import { IoPlaySharp } from 'react-icons/io5';
 
 const DetailPlaylist = () => {
 	const params = useParams();
@@ -18,16 +19,9 @@ const DetailPlaylist = () => {
 	
 	const { setPlaylistInfo } = useMakePlaylist();
 	const { isDeleteModalOpen, openDeleteModal } = useDeletePlaylistStore();
-	const { playlistData } = usePlaylist(playlistId);
+  const { playlistData } = usePlaylistState(playlistId);
+  const { setCurrentPlaylist, setCurrentVideoIndex } = useControlPlayingStore();
 
-  const [sorted, setSorted] = useState("최신순");
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const handleClickSort = (item: string) => {
-    setSorted(item);
-    setShowDropdown(false);
-  };
-	
 	const handleNavigateToEdit = () => {
 		setPlaylistInfo({
       title: playlistData?.title ?? '',
@@ -37,14 +31,25 @@ const DetailPlaylist = () => {
       count: playlistData?.likesCount ?? 0,
     });
 		navigate.push(`/playlist/${playlistId}/edit`);
-	}
+  }
+
+    const handlePlay = (startIndex?: number) => {
+      setCurrentPlaylist(playlistData?.videos ?? []);
+      if (startIndex !== undefined) {
+        setCurrentVideoIndex(startIndex);
+      }
+    };
+
+  const handleClickTrack = (trackIndex: number) => {
+    handlePlay(trackIndex);
+  }
 
   return (
     <>
       {isDeleteModalOpen && <DeletePlaylistModal playlistId={playlistId} />}
       <div className="w-full flex justify-center">
         <div className="min-w-[1190px] relative">
-          <div className="absolute right-0 flex gap-[16px] z-10">
+          <div className="absolute right-10 flex gap-[16px] z-10 top-10">
             <Button color="white" onClick={openDeleteModal}>
               삭제
             </Button>
@@ -70,7 +75,10 @@ const DetailPlaylist = () => {
                 <div className="flex flex-col gap-[20px]">
                   <div className="mt-[60px] flex items-center gap-[8px]">
                     {playlistData?.tags.map((tag) => (
-                      <span key={tag.tagId}>#{tag.tagId}</span>
+                      <div key={tag} className="flex gap-[3px] cursor-pointer">
+                        <span>#</span>
+                        <span>{tag}</span>
+                      </div>
                     ))}
                   </div>
                   <div className="flex gap-[20px] text-white text-[16px]">
@@ -80,7 +88,10 @@ const DetailPlaylist = () => {
                   </div>
                 </div>
               </div>
-              <button className="absolute w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center pl-2 shadow-lg hover:shadow-xl transition-shadow right-20 bottom-12">
+              <button
+                className="absolute w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center pl-2 shadow-lg hover:shadow-xl transition-shadow right-20 bottom-12"
+                onClick={() => handlePlay(0)}
+              >
                 <IoPlaySharp color="white" className="w-[40px] h-[40px]" />
               </button>
             </div>
@@ -92,36 +103,14 @@ const DetailPlaylist = () => {
               className="h-[400px] w-[1190px] object-cover"
             />
           </div>
-          <div className="flex justify-end items-center mb-[31px] ">
-            <div>
-              <button
-                className="w-[120px] flex items-center justify-between gap-2 rounded-lg border px-3 py-[6px] cursor-pointer"
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                {sorted} {showDropdown ? <IoArrowUp /> : <IoArrowDown />}
-              </button>
-              {showDropdown && (
-                <div className="w-[120px] rounded-md border mt-2 absolute">
-                  {["최신순", "음악순", "아티스트순"].map((item, i) => (
-                    <button
-                      key={item}
-                      className={`py-[6px] pl-[13px] w-[120px] ${
-                        i < 2 && "border-b"
-                      } text-left`}
-                      onClick={() => handleClickSort(item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
           <div className="w-full flex flex-col items-center mt-[55px] flex gap-[10px]">
-            {/* TODO: 백엔드에 track 데이터에 추가 안된거 추가해달라고 하기 */}
-            {[].length ? (
-              [].map((track: TrackInfo, i: number) => (
-                <Track key={i} {...track} />
+            {playlistData?.videos.length ? (
+              playlistData?.videos.map((track: Video, i) => (
+                <Track
+                  key={track.title + i}
+                  {...track}
+                  onClick={() => handleClickTrack(i)}
+                />
               ))
             ) : (
               <div className="mt-[150px] flex justify-center items-center text-base">
