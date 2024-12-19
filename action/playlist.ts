@@ -24,3 +24,13 @@ export const addVideoToPlaylist = async (playlistId: number) => {
 	const response = await api.post(`/playlists/${playlistId}/videos`);
 	return response.json()
 };
+
+export const getPopularPlaylists = async () => {
+	const response = await api.get(`/playlists/popular?limit=3`)
+	return response.json();
+}
+
+export const getLatestPlaylists = async () => {
+  const response = await api.get(`/playlists/latest?limit=12`);
+  return response.json();
+};

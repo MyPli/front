@@ -1,23 +1,27 @@
-export interface Tag {
-	playlistId: number;
-	tagId: number;
-}
-
 export interface Video {
 	id: number;
-	title: string;
-	url: string;
+  thumbnailUrl: string;
+  title: string;
+  url: string;
 }
 
 export interface PlaylistDetail {
   id: number;
-  userId: number;
   title: string;
   description: string;
   coverImage: string | null;
+  createdBy: string;
+  totalTime: string;
   likesCount: number;
   createdAt: string;
   updatedAt: string;
-	tags: Tag[];
+	tags: string[];
 	videos: Video[];
+}
+
+export interface Playlist {
+  id: number;
+  coverImage: string;
+  createdAt: string;
+  title: string;
 }

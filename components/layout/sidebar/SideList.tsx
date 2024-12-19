@@ -35,7 +35,7 @@ const SideList = () => {
       ref={sideListRef}
       className={`fixed top-sidelistTop left-0 
         h-[calc(100vh-71px)] 
-        z-10 py-4 rounded-md  
+        z-1 py-4 rounded-md  
         overflow-y-auto 
         scrollbar-hide
         

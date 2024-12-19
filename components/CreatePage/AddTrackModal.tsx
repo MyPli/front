@@ -4,7 +4,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import CreatePlaylist from "./TrackForAdd";
 import { useForm } from "react-hook-form";
 import { useSearch, YoutubePlaylist } from '@/hooks/queries/useSearch';
-import { usePlaylist } from '@/hooks/usePlaylistState';
+import { usePlaylistState } from '@/hooks/usePlaylistState';
 import { useAddVideoModalStore } from '@/store/addVideModalStore';
 
 interface FormData {
@@ -20,7 +20,7 @@ const AddTrackModal = ({playlistId}: IProps) => {
     mode: "onChange",
   });
   const { data: searchResult, refetch, isLoading } = useSearch(getValues('searchText'));
-  const { addVideo } = usePlaylist(playlistId);
+  const { addVideo } = usePlaylistState(playlistId);
   const {isAddModalOpen, closeAddModal } = useAddVideoModalStore();
 
   useEffect(() => {
