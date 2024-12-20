@@ -1,0 +1,2 @@
+/api/* http://test-sso.online:8080/:splat 200
+
