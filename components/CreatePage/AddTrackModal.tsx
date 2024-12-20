@@ -29,7 +29,7 @@ const AddTrackModal = ({playlistId}: IProps) => {
 
   const handleAddVideo = (item: YoutubePlaylist) => {
     // TODO: addVideo API 수정되면 이것도 수정
-    addVideo({ ...item })
+    addVideo?.({ ...item })
     closeAddModal();
   }
 

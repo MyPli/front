@@ -74,7 +74,7 @@ const Create = ({isEditMode}: IProps) => {
   };
 
   const handleUpdatePlaylist = () => {
-    updatePlaylist({
+    updatePlaylist?.({
       playlistId: Number(playlistId),
       // ...inputs
     })
@@ -154,13 +154,13 @@ const Create = ({isEditMode}: IProps) => {
                 <div className="w-[504px] h-[43px] border-b border-white mt-[60px] flex items-center">
                   <div className="flex mr-[8px] gap-[8px]">
                     {/* TODO: 백엔드에게 태그 수정해서 반영해달라고 하기 */}
-                    {inputs.tags.map((tag, i) => (
+                    {inputs.tags.map((tag) => (
                       <button
                         className="px-2 py-[1px] border border-white rounded-lg flex items-center gap-[4px]"
-                        key={i}
-                        onClick={() => handleRemoveTag(String(tag.tagId))}
+                        key={tag}
+                        onClick={() => handleRemoveTag(tag)}
                       >
-                        {tag.tagId}
+                        {tag}
                         <IoClose />
                       </button>
                     ))}
@@ -225,7 +225,11 @@ const Create = ({isEditMode}: IProps) => {
               tracks.map((track: TrackInfo, i: number) => (
                 <Track
                   key={i}
-                  {...track}
+                  thumbnailUrl={track.imageUrl}
+                  onClick={() => null}
+                  id={0}
+                  title={track.title}
+                  url={track.imageUrl}
                   onDelete={() =>
                     removeTrack({ title: track.title, artist: track.artist })
                   }

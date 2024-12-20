@@ -1,4 +1,3 @@
-import { Tag } from '@/models/playlist.model';
 import { create } from "zustand";
 
 export type TrackInfo = {
@@ -12,7 +11,7 @@ export type TrackInfo = {
 export type PlaylistInfo = {
   title: string;
   coverImage: string;
-  tags: Tag[];
+  tags: string[];
   totalTime: string;
   count: number;
 };
