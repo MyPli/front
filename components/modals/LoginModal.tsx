@@ -7,7 +7,6 @@ import { googleLogin, login } from "@/action/login";
 import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
-import { useLoginButtonState } from "@/hooks/useLoginButtonState";
 import { useAuthStore } from "@/store/authStore";
 
 export interface LoginProps {

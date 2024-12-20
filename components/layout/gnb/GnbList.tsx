@@ -41,6 +41,15 @@ const GnbList = () => {
     }
   };
 
+  const handleClickMypage = () => {
+    if (!isloggedIn) {
+      alert("로그인이 필요합니다");
+      return null;
+    } else {
+      openMypageModal();
+    }
+  };
+
   return (
     <>
       <Modal isOpen={loginModal} onClose={closeLoginModal}>
@@ -85,7 +94,7 @@ const GnbList = () => {
           <SearchBar />
         </li>
         <li className="flex flex-row gap-5">
-          <button onClick={openMypageModal}>
+          <button onClick={handleClickMypage}>
             <span>마이페이지</span>
           </button>
           {isloggedIn ? (

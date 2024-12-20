@@ -1,28 +1,14 @@
 "use client";
 
 import { useMyPageState } from "@/hooks/useMyPageState";
-import { useAuthStore } from "@/store/authStore";
 import { useMypageEditModalStore } from "@/store/myPageEditModalStore";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { IoPencil } from "react-icons/io5";
 
 const MyPageModal = () => {
   const { openMypageEditModal } = useMypageEditModalStore();
   const { profile } = useMyPageState();
-
-  const { isloggedIn } = useAuthStore();
-
-  useEffect(() => {
-    if (!isloggedIn) {
-      alert("로그인이 필요합니다");
-    }
-  }, []);
-
-  if (!isloggedIn) {
-    alert("로그인이 필요합니다");
-    return null;
-  }
 
   return (
     <div>

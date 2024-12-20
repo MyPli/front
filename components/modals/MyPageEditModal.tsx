@@ -6,14 +6,14 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { IoCheckmark } from "react-icons/io5";
 
 const MyPageEditModal = () => {
-  const { profile, updateProfile } = useMyPageState();
+  const { profile, updateNickname, updateProfileImage } = useMyPageState();
 
   const [nickname, setNickname] = useState<string>("");
   const [previewImage, setPreviewImage] = useState("");
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    setNickname(profile.nickname);
+    setNickname(profile.nickname || "");
     setPreviewImage(profile.profileImage || "/noResult.png");
   }, [profile]);
 
@@ -42,13 +42,14 @@ const MyPageEditModal = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (confirm("정말 수정하시겠습니까?")) {
-      const formData = new FormData();
-      formData.append("nickname", nickname);
-      if (profileImage) {
-        formData.append("profileImage", profileImage);
+      if (nickname !== profile.nickname) {
+        console.log(nickname);
+        updateNickname({ nickname });
       }
-      console.log(formData);
-      updateProfile(formData);
+      if (profileImage && profileImage !== profile.profileImage) {
+        console.log(profileImage);
+        updateProfileImage({ profileImage });
+      }
     } else return;
   };
 
@@ -64,7 +65,7 @@ const MyPageEditModal = () => {
       <div className="flex flex-col text-black gap-10">
         <div className="flex-center">
           <label
-            htmlFor="profileImage"
+            htmlFor="profile"
             className={`w-[200px] h-[200px] relative block overflow-hidden 
               cursor-pointer
             `}
@@ -77,13 +78,12 @@ const MyPageEditModal = () => {
               style={{ objectFit: "cover" }}
             />
           </label>
-
           <input
             onChange={handleImageChange}
             type="file"
             accept="image/*"
             className="hidden"
-            name="profileImage"
+            id="profile"
           />
         </div>
 
