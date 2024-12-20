@@ -22,7 +22,7 @@ const Card = ({ size = "large", ...props }: IProps) => {
     >
       <div className={`relative ${size === "small" ? "w-full" : ""}`}>
         {isHovered && (
-          <div className="w-full h-full bg-black absolute backdrop-blur-sm top-0 left-0 flex justify-center items-center opacity-70 z-50">
+          <div className="w-full h-full bg-black absolute backdrop-blur-sm top-0 left-0 flex justify-center items-center opacity-70 z-30">
             <IoPlaySharp size={size === "large" ? 87 : 60} />
           </div>
         )}

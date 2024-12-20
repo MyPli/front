@@ -2,6 +2,7 @@
 
 import { MypageFormSchema, MypageFormState } from "@/models/mypage.model";
 import { api } from "@/utils/api";
+import { getAccessToken } from "./login";
 
 export const getProfile = async () => {
   try {
@@ -36,7 +37,6 @@ export const patchNickname = async ({
     const res = await api.patch("/users/me/nickname", {
       body: JSON.stringify({ nickname }),
     });
-    console.log(res.status);
     if (!res.ok) {
       if (res.status === 401) {
         return { errors: { message: "UnAuthorized" } };
@@ -59,12 +59,23 @@ export const patchNickname = async ({
 export const patchProfileImage = async ({
   profileImage,
 }: {
-  profileImage: string;
+  profileImage: File;
 }): Promise<MypageFormState> => {
   try {
-    const res = await api.patch("/users/me/nickname", {
-      body: JSON.stringify({ profileImage }),
-    });
+    const token = await getAccessToken();
+    const formData = new FormData();
+    formData.append("file", profileImage);
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/me/profile-image`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      },
+    );
 
     if (!res.ok) {
       if (res.status === 401) {
@@ -73,7 +84,7 @@ export const patchProfileImage = async ({
     }
 
     const json = await res.json();
-    console.log("2", json);
+    console.log("파일 업로드", json);
     return {
       ...json,
     };

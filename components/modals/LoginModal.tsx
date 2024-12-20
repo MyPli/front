@@ -27,6 +27,8 @@ const LoginModal = () => {
       storeLogin();
 
       closeLoginModal();
+    } else {
+      console.log(state?.errors);
     }
   }, [state, closeLoginModal]);
 

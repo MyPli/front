@@ -1,30 +1,41 @@
-import { useAddVideo, useDeletePlaylsit, useGetLatestPlaylists, useGetPlaylistDetail, useGetPopularPlaylists, useUpdatePlaylist } from './queries/usePlaylist'
+import {
+  useAddVideo,
+  useDeletePlaylsit,
+  useGetLatestPlaylists,
+  useGetMyPlaylists,
+  useGetPlaylistDetail,
+  useGetPopularPlaylists,
+  useUpdatePlaylist,
+} from "./queries/usePlaylist";
 
 export const usePlaylistState = (playlistId?: number) => {
-	const { data: playlistData, isLoading: loadingPlaylist } = useGetPlaylistDetail(playlistId!);
-	const { data: latests } = useGetLatestPlaylists();
-	const { data: populars } = useGetPopularPlaylists();
+  const { data: playlistData, isLoading: loadingPlaylist } =
+    useGetPlaylistDetail(playlistId!);
+  const { data: latests } = useGetLatestPlaylists();
+  const { data: populars } = useGetPopularPlaylists();
+  const { data: myplaylists } = useGetMyPlaylists();
 
-	const { mutate: updatePlaylist } = useUpdatePlaylist();
-	const { mutate: deletePlaylist } = useDeletePlaylsit();
-	const { mutate: addVideo } = useAddVideo();
+  const { mutate: updatePlaylist } = useUpdatePlaylist();
+  const { mutate: deletePlaylist } = useDeletePlaylsit();
+  const { mutate: addVideo } = useAddVideo();
 
-	if (playlistId) {
-		const handleDelete = () => deletePlaylist({ playlistId });
+  if (playlistId) {
+    const handleDelete = () => deletePlaylist({ playlistId });
 
     const handleAddVideo = (data: any) => addVideo({ playlistId, ...data });
 
     return {
-			playlistData,
-			loadingPlaylist,
+      myplaylists,
+      playlistData,
+      loadingPlaylist,
       updatePlaylist,
       deletePlaylist: handleDelete,
       addVideo: handleAddVideo,
     };
-	} else {
-		return {
+  } else {
+    return {
       latests,
       populars,
     };
-	}
-}
+  }
+};

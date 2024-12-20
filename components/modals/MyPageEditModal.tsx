@@ -1,16 +1,17 @@
 "use client";
 
-import { useMyPageState } from "@/hooks/useMyPageState";
+import { useUserState } from "@/hooks/useUserState";
 import Image from "next/image";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { IoCheckmark } from "react-icons/io5";
 
 const MyPageEditModal = () => {
-  const { profile, updateNickname, updateProfileImage } = useMyPageState();
+  const { profile, updateNickname, updateProfileImage, deleteUser } =
+    useUserState();
 
   const [nickname, setNickname] = useState<string>("");
   const [previewImage, setPreviewImage] = useState("");
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
 
   useEffect(() => {
     setNickname(profile.nickname || "");
@@ -20,11 +21,13 @@ const MyPageEditModal = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setProfileImage(file);
+
       const reader = new FileReader();
+
       reader.onloadend = () => {
         const base64String = reader.result as string;
         setPreviewImage(base64String);
-        setProfileImage(base64String);
       };
       reader.onerror = () => {
         setPreviewImage("/noResult.png");
@@ -43,14 +46,16 @@ const MyPageEditModal = () => {
     e.preventDefault();
     if (confirm("정말 수정하시겠습니까?")) {
       if (nickname !== profile.nickname) {
-        console.log(nickname);
         updateNickname({ nickname });
       }
       if (profileImage && profileImage !== profile.profileImage) {
-        console.log(profileImage);
         updateProfileImage({ profileImage });
       }
     } else return;
+  };
+
+  const handleClick = () => {
+    deleteUser();
   };
 
   return (
@@ -107,7 +112,11 @@ const MyPageEditModal = () => {
             <span className="text-lg font-medium">{profile.email}</span>
           </div>
           <div className="w-full pt-4">
-            <button type="button" className="text-xs items-start text-zinc-400">
+            <button
+              onClick={handleClick}
+              type="button"
+              className="text-xs items-start text-zinc-400"
+            >
               회원탈퇴
             </button>
           </div>

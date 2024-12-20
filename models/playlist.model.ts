@@ -1,5 +1,5 @@
 export interface Video {
-	id: number;
+  id: number;
   thumbnailUrl: string;
   title: string;
   url: string;
@@ -15,8 +15,8 @@ export interface PlaylistDetail {
   likesCount: number;
   createdAt: string;
   updatedAt: string;
-	tags: string[];
-	videos: Video[];
+  tags: string[];
+  videos: Video[];
 }
 
 export interface Playlist {
@@ -24,4 +24,8 @@ export interface Playlist {
   coverImage: string;
   createdAt: string;
   title: string;
+}
+
+export interface MyPlaylist extends Playlist {
+  videos: Video[];
 }
