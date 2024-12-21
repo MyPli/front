@@ -6,6 +6,6 @@ export const addBookmark = async (playlistId: number) => {
 };
 
 export const removeBookmark = async (playlistId: number) => {
-  const response = await api.delete(`/playlist/${playlistId}/like`);
+  const response = await api.delete(`/playlists/${playlistId}/like`);
   return response.json();
 };
