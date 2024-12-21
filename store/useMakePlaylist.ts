@@ -1,15 +1,9 @@
+import { Video } from '@/models/playlist.model';
 import { create } from "zustand";
-
-export type TrackInfo = {
-  imageUrl: string;
-  title: string;
-  artist: string;
-  time: string;
-  isAdded: boolean;
-};
 
 export type PlaylistInfo = {
   title: string;
+  description: string;
   coverImage: string;
   tags: string[];
   totalTime: string;
@@ -19,10 +13,10 @@ export type PlaylistInfo = {
 interface StoreState {
   playlistInfo: PlaylistInfo;
   setPlaylistInfo: (value: PlaylistInfo) => void;
-  tracks: TrackInfo[];
-  setTracks: (tracks: TrackInfo[]) => void;
-  addTrack: (track: TrackInfo) => void;
-  removeTrack: (value: Pick<TrackInfo, "title" | "artist">) => void;
+  tracks: Video[];
+  setTracks: (tracks: Video[]) => void;
+  addTrack: (track: Video) => void;
+  removeTrack: (value: Pick<Video, "title" | "artist">) => void;
   clearPlaylist: () => void;
 }
 
@@ -33,9 +27,10 @@ export const useMakePlaylist = create<StoreState>((set) => ({
     tags: [],
     totalTime: "",
     count: 0,
+    description: '',
   },
   tracks: [],
-  setTracks: (tracks: TrackInfo[]) => set({ tracks }),
+  setTracks: (tracks: Video[]) => set({ tracks }),
   addTrack: (track) =>
     set((state) => ({
       tracks: [
@@ -58,6 +53,7 @@ export const useMakePlaylist = create<StoreState>((set) => ({
       tracks: [],
       playlistInfo: {
         title: "",
+        description: '',
         coverImage: "",
         tags: [],
         totalTime: "",

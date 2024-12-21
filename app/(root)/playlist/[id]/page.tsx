@@ -27,6 +27,7 @@ const DetailPlaylist = () => {
 	const handleNavigateToEdit = () => {
 		setPlaylistInfo({
       title: playlistData?.title ?? '',
+      description: playlistData?.description ?? '', 
       coverImage: playlistData?.coverImage ?? '',
       tags: playlistData?.tags ?? [],
       totalTime: '00', 
@@ -161,7 +162,6 @@ const DetailPlaylist = () => {
                       key={track.title + i}
                       {...track}
                       onClick={() => handleClickTrack(i)}
-                      isMyPage={playlistData?.createdByMe}
                     />
                   ))
                 ) : (
