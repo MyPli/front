@@ -1,6 +1,5 @@
 "use client";
 
-import { usePlaylistState } from "@/hooks/usePlaylistState";
 import { Like } from "@/models/like.model";
 import { MyPlaylist } from "@/models/playlist.model";
 import Image from "next/image";
@@ -10,10 +9,10 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface SideOpenItemProps {
   title: string;
-  items: Like[] | MyPlaylist[] | undefined;
+  items: Like[] | MyPlaylist[] | [];
 }
 
-const SideOpenItem = ({ title, items }: SideOpenItemProps) => {
+const SideOpenItem = ({ title, items = [] }: SideOpenItemProps) => {
   const [showAll, setShowAll] = useState(false);
 
   const handleClickMore = () => {
@@ -35,11 +34,15 @@ const SideOpenItem = ({ title, items }: SideOpenItemProps) => {
             >
               <Image
                 src={item.coverImage ? item.coverImage : "/blur.png"}
-                width={10}
-                height={10}
+                width={40}
+                height={40}
                 alt={`${item.title} 커버 이미지`}
               />
-              <span>{item.title}</span>
+              <span>
+                {item.title.length < 6
+                  ? item.title
+                  : item.title.slice(0, 6) + "..."}
+              </span>
             </Link>
           </li>
         ))}

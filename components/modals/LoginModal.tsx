@@ -8,6 +8,8 @@ import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
 import { useAuthStore } from "@/store/authStore";
+import { queryClient } from "@/utils/ReactQueryProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface LoginProps {
   email: string;
@@ -20,17 +22,32 @@ const LoginModal = () => {
   const { storeLogin } = useAuthStore();
 
   const [state, action] = useActionState(login, null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (state && !state.errors) {
-      alert("로그인 성공");
-      storeLogin();
+      // 로그인 성공 시 처리
+      const fetchData = async () => {
+        try {
+          // 플레이리스트와 북마크 데이터 fetch
+          await Promise.all([
+            queryClient.refetchQueries({ queryKey: ["myplaylists"] }),
+            queryClient.refetchQueries({ queryKey: ["likelist"] }),
+          ]);
 
-      closeLoginModal();
+          alert("로그인 성공");
+          storeLogin();
+          closeLoginModal();
+        } catch (error) {
+          console.error("데이터 fetch 실패:", error);
+        }
+      };
+
+      fetchData();
     } else {
       console.log(state?.errors?.message);
     }
-  }, [state, closeLoginModal]);
+  }, [state, closeLoginModal, storeLogin, queryClient]);
 
   const handleClick = () => {
     closeLoginModal();
