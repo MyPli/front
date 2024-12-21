@@ -13,8 +13,9 @@ export interface PlaylistDetail {
   description: string;
   coverImage: string | null;
   createdBy: string;
+  createdByMe: boolean;
   totalTime: string;
-  likesCount: number;
+  liked: boolean;
   createdAt: string;
   updatedAt: string;
   tags: string[];
