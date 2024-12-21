@@ -3,6 +3,7 @@
 import Button from '@/components/commons/Button';
 import Track from '@/components/CreatePage/Track';
 import DeletePlaylistModal from '@/components/modals/DeletePlaylistModal';
+import { useBookmark } from '@/hooks/useBookmark';
 import { usePlaylistState } from '@/hooks/usePlaylistState';
 import { Video } from '@/models/playlist.model';
 import { useControlPlayingStore } from '@/store/playStore';
@@ -10,19 +11,18 @@ import { useDeletePlaylistStore } from '@/store/useDeletePlaylistStore';
 import { useMakePlaylist } from '@/store/useMakePlaylist';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { IoPlaySharp } from 'react-icons/io5';
+import { IoBookmark, IoBookmarkOutline, IoPlaySharp } from 'react-icons/io5';
 
 const DetailPlaylist = () => {
 	const params = useParams();
 	const playlistId = Number(params.id);
   const navigate = useRouter()
-  
-  const isMyPlaylist = false;
 	
 	const { setPlaylistInfo } = useMakePlaylist();
 	const { isDeleteModalOpen, openDeleteModal } = useDeletePlaylistStore();
   const { playlistData, loadingPlaylist } = usePlaylistState(playlistId);
   const { setCurrentPlaylist, setCurrentVideoIndex } = useControlPlayingStore();
+  const { handleBookmark } = useBookmark()
 
 	const handleNavigateToEdit = () => {
 		setPlaylistInfo({
@@ -30,7 +30,7 @@ const DetailPlaylist = () => {
       coverImage: playlistData?.coverImage ?? '',
       tags: playlistData?.tags ?? [],
       totalTime: '00', 
-      count: playlistData?.likesCount ?? 0,
+      count: playlistData?.videos?.length as number,
     });
 		navigate.push(`/playlist/${playlistId}/edit`);
   }
@@ -42,9 +42,7 @@ const DetailPlaylist = () => {
     }
   };
 
-  const handleClickTrack = (trackIndex: number) => {
-    handlePlay(trackIndex);
-  }
+  const handleClickTrack = handlePlay;
 
   return (
     <>
@@ -57,7 +55,7 @@ const DetailPlaylist = () => {
             </div>
           ) : (
             <>
-              {isMyPlaylist && (
+              {playlistData?.createdByMe && (
                 <div className="absolute right-20 flex gap-[16px] z-10 top-10">
                   <Button color="white" onClick={openDeleteModal}>
                     삭제
@@ -67,6 +65,27 @@ const DetailPlaylist = () => {
                   </Button>
                 </div>
               )}
+              <button
+                className="absolute top-12 left-16 cursor-pointer z-10"
+                onClick={() =>
+                  handleBookmark(
+                    playlistData?.liked ? "delete" : "add",
+                    playlistData?.id as number,
+                  )
+                }
+              >
+                {playlistData?.liked ? (
+                  <IoBookmark
+                    color="white"
+                    className="w-[30px] h-[30px] hover:scale-110 transition-transform"
+                  />
+                ) : (
+                  <IoBookmarkOutline
+                    color="white"
+                    className="w-[30px] h-[30px] hover:scale-110 transition-transform"
+                  />
+                )}
+              </button>
               <div className="h-[400px] w-full relative mb-10 flex jusitfy-center items-center">
                 <div className="absolute w-full top-0 flex justify-start items-center gap-[46px] mt-10 pl-40">
                   {playlistData?.coverImage ? (
@@ -115,12 +134,17 @@ const DetailPlaylist = () => {
                       </div>
                     </div>
                   </div>
-                  <button
-                    className="absolute w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center pl-2 shadow-lg hover:shadow-xl transition-shadow right-20 bottom-12"
-                    onClick={() => handlePlay(0)}
-                  >
-                    <IoPlaySharp color="white" className="w-[40px] h-[40px]" />
-                  </button>
+                  <div className="absolute right-20 h-full py-9 flex flex-col justify-end items-center">
+                    <button
+                      className="w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center pl-2 shadow-lg hover:shadow-xl transition-shadow"
+                      onClick={() => handlePlay(0)}
+                    >
+                      <IoPlaySharp
+                        color="white"
+                        className="w-[40px] h-[40px]"
+                      />
+                    </button>
+                  </div>
                 </div>
                 <Image
                   src="/blur.png"
@@ -137,7 +161,6 @@ const DetailPlaylist = () => {
                       key={track.title + i}
                       {...track}
                       onClick={() => handleClickTrack(i)}
-                      isMyPlaylist={isMyPlaylist}
                     />
                   ))
                 ) : (
