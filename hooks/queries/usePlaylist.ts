@@ -21,10 +21,19 @@ const useGetPlaylistDetail = (playlistId: number) => {
   });
 };
 
+interface UpdatePlaylist {
+  playlistId: number;
+  body: {
+    title: string;
+    description: string;
+    tags: string[];
+  }
+}
+
 const useUpdatePlaylist = () => {
   return useMutation({
-    mutationFn: ({ playlistId }: { playlistId: number }) =>
-      updatePlaylistDetail(playlistId),
+    mutationFn: ({ playlistId, body }: UpdatePlaylist) =>
+      updatePlaylistDetail(playlistId, body),
     onSuccess: (_, variables) =>
       queryClient.refetchQueries({
         queryKey: ["get-playlist", variables.playlistId],

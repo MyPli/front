@@ -8,10 +8,12 @@ export const getPlaylistDetail = async (
   return response.json();
 };
 
-export const updatePlaylistDetail = async (playlistId: number) => {
-  const response = await api.patch(`/playlists/${playlistId}`, {
-    body: "",
-  });
+export const updatePlaylistDetail = async (playlistId: number, data: {
+  title: string;
+  description: string;
+  tags: string[]
+}) => {
+  const response = await api.patch(`/playlists/${playlistId}`, data);
   return response.json();
 };
 
