@@ -8,7 +8,6 @@ import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
 import { useAuthStore } from "@/store/authStore";
-import { queryClient } from "@/utils/ReactQueryProvider";
 import { useQueryClient } from "@tanstack/react-query";
 
 export interface LoginProps {

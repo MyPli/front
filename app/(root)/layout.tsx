@@ -4,7 +4,6 @@ import GnbList from "@/components/layout/gnb/GnbList";
 import SideList from "@/components/layout/sidebar/SideList";
 import SoundPlayer from "@/components/player/SoundPlayer";
 import { useAutoAuth } from "@/hooks/useAutoAuth";
-import { useAuthStore } from "@/store/authStore";
 import { useControlPlayingStore } from "@/store/playStore";
 import { usePathname } from "next/navigation";
 import React from "react";

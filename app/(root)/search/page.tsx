@@ -2,7 +2,6 @@ import { fetchSearch } from "@/action/search";
 import Card from "@/components/commons/Card";
 import NoData from "@/components/commons/NoData";
 import Title from "@/components/commons/Title";
-import { useSearch } from "@/hooks/queries/useSearch";
 import React from "react";
 
 const Search = async ({
