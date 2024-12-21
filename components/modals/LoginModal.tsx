@@ -7,6 +7,8 @@ import { login } from "@/action/login";
 import { useLoginModalStore } from "@/store/loginModalStore";
 import { useSignUpModalStore } from "@/store/signUpModalStore";
 import FormInput from "../commons/FormInput";
+import { useAuthStore } from "@/store/authStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface LoginProps {
   email: string;
@@ -16,32 +18,43 @@ export interface LoginProps {
 const LoginModal = () => {
   const { closeLoginModal } = useLoginModalStore();
   const { openSignUpModal } = useSignUpModalStore();
+  const { storeLogin } = useAuthStore();
 
-  const [state, action, pending] = useActionState(login, undefined);
+  const [state, action] = useActionState(login, null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (state && !state.errors) {
-      closeLoginModal();
+      // 로그인 성공 시 처리
+      const fetchData = async () => {
+        try {
+          // 플레이리스트와 북마크 데이터 fetch
+          await Promise.all([
+            queryClient.refetchQueries({ queryKey: ["myplaylists"] }),
+            queryClient.refetchQueries({ queryKey: ["likelist"] }),
+          ]);
+
+          alert("로그인 성공");
+          storeLogin();
+          closeLoginModal();
+        } catch (error) {
+          console.error("데이터 fetch 실패:", error);
+        }
+      };
+
+      fetchData();
+    } else {
+      console.log(state?.errors?.message);
     }
-  }, [state, closeLoginModal]);
+  }, [state, closeLoginModal, storeLogin, queryClient]);
 
   const handleClick = () => {
     closeLoginModal();
     openSignUpModal();
   };
 
-  const googleOAuth = () => {
-    const baseURL = "https://accounts.google.com/o/oauth2/auth";
-    const params = new URLSearchParams({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_KEY!,
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI!,
-      response_type: "token",
-      scope:
-        "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-    });
-
-    const finalURL = `${baseURL}?${params.toString()}`;
-    window.location.href = finalURL;
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google`;
   };
 
   return (
@@ -51,6 +64,7 @@ const LoginModal = () => {
     >
       <Image src="/MyPli.png" alt="로고" width={90} height={30} />
       <h1 className="text-lg">로그인 </h1>
+
       <form action={action} className="flex flex-col items-center gap-4 w-full">
         <FormInput
           placeholder="이메일"
@@ -58,19 +72,26 @@ const LoginModal = () => {
           name="email"
           errors={state?.errors?.email}
         />
+        {state?.errors?.message && (
+          <div className="text-red-500 text-sm ">{state.errors.message}</div>
+        )}
+
         <FormInput
           placeholder="비밀번호"
           type="password"
           name="password"
           errors={state?.errors?.password}
         />
-        <FormButton size="large" color="primary" disabled={pending}>
+        {state?.errors?.message && (
+          <div className="text-red-500 text-sm">{state.errors.message}</div>
+        )}
+        <FormButton size="large" color="primary">
           <span>로그인</span>
         </FormButton>
       </form>
 
       <div className="bg-gray w-full h-[1px]" />
-      <FormButton size="large" color="white" onClick={googleOAuth}>
+      <FormButton size="large" color="white" onClick={handleGoogleLogin}>
         <span>구글 로그인</span>
       </FormButton>
       <h2>

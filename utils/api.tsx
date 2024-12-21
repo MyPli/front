@@ -20,9 +20,8 @@ const createAPI = async (
   options: APIOptions = {},
 ) => {
   const { headers = {}, body, ...restOptions } = options;
-  const token = getAccessToken();
+  const token = await getAccessToken();
   const preventToken = ["/auth/login", "/auth/signup"];
-
   const res = await fetch(`${BASE_URL}/api${endpoint}`, {
     method,
     headers: {

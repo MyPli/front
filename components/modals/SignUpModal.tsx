@@ -16,15 +16,19 @@ const SignUpModal = () => {
   const { closeSignUpModal } = useSignUpModalStore();
   const { openLoginModal } = useLoginModalStore();
 
-  const [state, action, pending] = useActionState(signUp, undefined);
+  const [state, action] = useActionState(signUp, null);
 
   useEffect(() => {
-    if (state && !state.errors && state.success) {
-      closeSignUpModal();
-      openLoginModal();
+    if (state) {
+      if (state && !state.errors) {
+        alert("회원가입이 완료되었습니다!");
+        closeSignUpModal();
+        openLoginModal();
+      } else if (state.errors?.message) {
+        alert(state.errors.message);
+      }
     }
   }, [state, closeSignUpModal, openLoginModal]);
-
   const handleClick = () => {
     closeSignUpModal();
     openLoginModal();
@@ -60,19 +64,20 @@ const SignUpModal = () => {
           errors={state?.errors?.password}
         />
 
-        <FormButton size="large" color="primary" disabled={pending}>
+        <FormButton size="large" color="primary">
           <span>회원가입</span>
         </FormButton>
       </form>
       <h2>
         계정이 있으신가요?
-        <span
+        <button
+          type="button"
           onClick={handleClick}
           className="underline underline-offset-4 font-semibold cursor-pointer"
         >
           {" "}
           로그인 하러가기
-        </span>
+        </button>
       </h2>
     </div>
   );

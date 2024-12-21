@@ -3,7 +3,7 @@
 import { useSideBarStore } from "@/store/sideBarStore";
 import React, { useEffect, useRef } from "react";
 import SideLinkItem from "./SideLinkItem";
-import SideBookmark from "./SideBookmark";
+import SideLikelist from "./SideLikelist";
 import SidePlaylist from "./SidePlaylist";
 
 const SideList = () => {
@@ -35,7 +35,7 @@ const SideList = () => {
       ref={sideListRef}
       className={`fixed top-sidelistTop left-0 
         h-[calc(100vh-71px)] 
-        z-1 py-4 rounded-md  
+        z-50 py-4 rounded-md  
         overflow-y-auto 
         scrollbar-hide
         
@@ -50,7 +50,7 @@ const SideList = () => {
             <SidePlaylist />
           </section>
           <section className="p-4 pl-2 pb-1">
-            <SideBookmark />
+            <SideLikelist />
           </section>
         </>
       )}

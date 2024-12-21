@@ -6,7 +6,7 @@ interface StoreState {
   openMypageModal: () => void;
 }
 
-export const useMypageModalModalStore = create<StoreState>((set) => ({
+export const useMypageModalStore = create<StoreState>((set) => ({
   mypageModal: false,
   openMypageModal: () => set({ mypageModal: true }),
   closeMypageModal: () => set({ mypageModal: false }),
