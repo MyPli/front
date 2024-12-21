@@ -1,4 +1,3 @@
-import { usePlaylistState } from '@/hooks/usePlaylistState';
 import { Video } from '@/models/playlist.model';
 import { useControlPlayingStore } from '@/store/playStore';
 import Image from "next/image";
@@ -7,20 +6,17 @@ import { useEffect, useState } from 'react';
 interface IProps extends Video {
   onDelete?: () => void;
   onClick: () => void;
+  isMyPage: boolean;
 }
 
-const Track = ({ onDelete, onClick, ...props }: IProps) => {
-  const [isPlaying, setIsPlaying] = useState(false)
+const Track = ({ isMyPage, onDelete, onClick, ...props }: IProps) => {
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const {
-    currentPlaylist,
-    currentVideoIndex,
-  } = useControlPlayingStore();
-  const { playlistData } = usePlaylistState();
+  const { currentPlaylist, currentVideoIndex } = useControlPlayingStore();
 
   useEffect(() => {
     setIsPlaying(currentPlaylist[currentVideoIndex]?.title === props.title);
-  }, [currentPlaylist, currentVideoIndex])
+  }, [currentPlaylist, currentVideoIndex]);
 
   return (
     <div
@@ -56,7 +52,7 @@ const Track = ({ onDelete, onClick, ...props }: IProps) => {
       </span>
       <div className="flex items-center justify-between flex-[0.4]">
         <span className="text-base text-white">{props.time}</span>
-        {playlistData?.createdByMe && (
+        {isMyPage && (
           <button
             className="px-[44px] opacity-0 group-hover:opacity-100 transition-opacity"
             onClick={onDelete}

@@ -161,6 +161,7 @@ const DetailPlaylist = () => {
                       key={track.title + i}
                       {...track}
                       onClick={() => handleClickTrack(i)}
+                      isMyPage={playlistData?.createdByMe}
                     />
                   ))
                 ) : (
