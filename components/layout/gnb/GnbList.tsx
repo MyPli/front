@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "./GnbSearchForm";
 import HambugerMenu from "./GnbHambugerMenu";
 import Modal from "@/components/commons/Modal";
@@ -12,7 +12,7 @@ import { useMypageModalStore } from "@/store/myPageModalStore";
 import LoginModal from "@/components/modals/LoginModal";
 import SignUpModal from "@/components/modals/SignUpModal";
 import MyPageModal from "@/components/modals/MyPageModal";
-import { logout } from "@/action/login";
+import { getAccessToken, logout } from "@/action/login";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useMypageEditModalStore } from "@/store/myPageEditModalStore";
@@ -26,7 +26,7 @@ const GnbList = () => {
 
   const { mypageEditModal, closeMypageEditModal } = useMypageEditModalStore();
 
-  const { isloggedIn, storeLogout } = useAuthStore();
+  const { isloggedIn, storeLogout, initializeAuth } = useAuthStore();
 
   const router = useRouter();
 

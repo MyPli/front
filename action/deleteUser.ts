@@ -11,7 +11,7 @@ export const deleteUser = async () => {
       console.log("유효하지 않거나 만료된 토큰입니다");
     }
 
-    //    await resetAuthCookies();
+    // await resetAuthCookies();
     const json = await response.json();
     console.log(json);
 

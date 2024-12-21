@@ -30,6 +30,11 @@ export const login = async (
     });
 
     if (!res.ok) {
+      if (res.status === 400) {
+        return {
+          errors: { message: "입력형식이 잘못되었습니다" },
+        };
+      }
       if (res.status === 401) {
         return {
           errors: { message: "잘못된 이메일 혹은 비밀번호입니다." },
@@ -96,7 +101,6 @@ export const logout = async () => {
 export const googleLogin = async () => {
   try {
     const res = await api.get("/auth/google");
-    const json = await res.json();
 
     if (!res.ok) {
       return {
@@ -104,7 +108,7 @@ export const googleLogin = async () => {
       };
     }
 
-    return json;
+    return "성공";
   } catch (error) {
     console.log("네트워크 에러", error);
     return {

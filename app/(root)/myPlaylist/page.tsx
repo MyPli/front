@@ -7,10 +7,7 @@ import React from "react";
 
 const MyPlayList = async () => {
   const session = await getAccessToken();
-
   const res = await getMyPlaylists();
-
-  console.log(res);
 
   return (
     <div>

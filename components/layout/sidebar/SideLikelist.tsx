@@ -4,14 +4,8 @@ import { useLikelistState } from "@/hooks/useLikelistState";
 
 const SideLikelist = () => {
   const { likelist } = useLikelistState();
-  const playlistItems = likelist || [];
 
-  return (
-    <SideOpenItem
-      title="내 좋아요 리스트"
-      items={playlistItems.length > 0 ? playlistItems : undefined}
-    />
-  );
+  return <SideOpenItem title="내 좋아요 리스트" items={likelist} />;
 };
 
 export default SideLikelist;

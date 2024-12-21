@@ -1,18 +1,16 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMyPlaylists } from "@/action/playlist";
 import SideOpenItem from "./SideOpenItem";
-import { usePlaylistState } from "@/hooks/usePlaylistState";
 
 const SidePlaylist = () => {
-  const { myplaylists } = usePlaylistState();
+  const { data: myplaylists, refetch } = useQuery({
+    queryKey: ["myplaylists"],
+    queryFn: getMyPlaylists,
+    initialData: [],
+  });
 
-  const playlistItems = myplaylists || [];
-
-  return (
-    <SideOpenItem
-      title="내 리스트"
-      items={playlistItems.length > 0 ? playlistItems : undefined}
-    />
-  );
+  return <SideOpenItem title="내 리스트" items={myplaylists} />;
 };
 
 export default SidePlaylist;

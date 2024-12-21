@@ -8,6 +8,7 @@ const useGetLikelist = () => {
   return useQuery<Like[]>({
     queryKey: ["like"],
     queryFn: getLikeList,
+    initialData: [],
   });
 };
 

@@ -74,6 +74,7 @@ const useGetMyPlaylists = () => {
   return useQuery({
     queryKey: ["myplaylists"],
     queryFn: getMyPlaylists,
+    initialData: [],
   });
 };
 
