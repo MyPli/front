@@ -225,10 +225,10 @@ const Create = ({isEditMode}: IProps) => {
               tracks.map((track: TrackInfo, i: number) => (
                 <Track
                   key={i}
+                  {...track}
                   thumbnailUrl={track.imageUrl}
                   onClick={() => null}
                   id={0}
-                  title={track.title}
                   url={track.imageUrl}
                   onDelete={() =>
                     removeTrack({ title: track.title, artist: track.artist })

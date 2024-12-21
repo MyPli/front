@@ -34,6 +34,15 @@ export default {
         sideOpen: "220px",
         sideClose: "96px",
       },
+      animation: {
+        marquee: "marquee 15s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [scrollbarHide],

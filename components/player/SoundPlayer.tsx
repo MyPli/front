@@ -16,6 +16,7 @@ const SoundPlayer = () => {
     playStatus,
     setPlayStatus,
   } = useControlPlayingStore();
+
   const [player, setPlayer] = useState<any>(null);
   const [currentSong, setCurrentSong] = useState<Video>();
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -39,7 +40,7 @@ const SoundPlayer = () => {
       player.pauseVideo();
     }
   }, [playStatus]);
-
+  
   const handleVolumeChange = (newVolume: number) => {
     if (!player) return;
 
@@ -98,17 +99,39 @@ const SoundPlayer = () => {
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-[60px] h-[60px] rounded-lg overflow-hidden">
-                <Image
-                  src={currentSong?.thumbnailUrl as string}
-                  alt="thumbnail"
-                  width={60}
-                  height={60}
-                  className="object-cover w-[60px] h-[60px]"
-                />
+                {currentSong?.thumbnailUrl ? (
+                  <Image
+                    src={currentSong?.thumbnailUrl as string}
+                    alt="thumbnail"
+                    width={60}
+                    height={60}
+                    className="object-cover w-[60px] h-[60px]"
+                  />
+                ) : (
+                  <Image
+                    src={'/logo-gray.png'}
+                    alt="thumbnail"
+                    width={60}
+                    height={60}
+                    className="object-cover w-[60px] h-[60px]"
+                  />
+                )}
               </div>
               <div className="text-white">
-                <h3 className="font-medium">{currentSong?.title as string}</h3>
-                <p className="text-sm text-gray-400">{"에스파"}</p>
+                <div className="w-[300px] overflow-hidden">
+                  <h3
+                    className={`font-medium whitespace-nowrap ${
+                      currentSong?.title && currentSong.title.length > 30
+                        ? "animate-marquee"
+                        : ""
+                    }`}
+                  >
+                    {currentSong?.title as string}
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-400">
+                  {currentSong?.artist as string}
+                </p>
               </div>
             </div>
             <div>
