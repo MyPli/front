@@ -3,6 +3,8 @@ export interface Video {
   thumbnailUrl: string;
   title: string;
   url: string;
+  time: string;
+  artist: string;
 }
 
 export interface PlaylistDetail {
