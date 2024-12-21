@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 interface IProps extends Video {
   onDelete?: () => void;
   onClick: () => void;
-  isMyPage: boolean;
+  isEditing?: boolean;
 }
 
-const Track = ({ isMyPage, onDelete, onClick, ...props }: IProps) => {
+const Track = ({ onDelete, isEditing = false, onClick, ...props }: IProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const { currentPlaylist, currentVideoIndex } = useControlPlayingStore();
@@ -52,7 +52,7 @@ const Track = ({ isMyPage, onDelete, onClick, ...props }: IProps) => {
       </span>
       <div className="flex items-center justify-between flex-[0.4]">
         <span className="text-base text-white">{props.time}</span>
-        {isMyPage && (
+        {isEditing && (
           <button
             className="px-[44px] opacity-0 group-hover:opacity-100 transition-opacity"
             onClick={onDelete}
