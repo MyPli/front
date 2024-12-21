@@ -19,14 +19,13 @@ import { useMypageEditModalStore } from "@/store/myPageEditModalStore";
 import MyPageEditModal from "@/components/modals/MyPageEditModal";
 
 const GnbList = () => {
+  const { isloggedIn, storeLogout } = useAuthStore();
   const { loginModal, openLoginModal, closeLoginModal } = useLoginModalStore();
   const { signUpModal, closeSignUpModal } = useSignUpModalStore();
   const { mypageModal, openMypageModal, closeMypageModal } =
     useMypageModalStore();
 
   const { mypageEditModal, closeMypageEditModal } = useMypageEditModalStore();
-
-  const { isloggedIn, storeLogout } = useAuthStore();
 
   const router = useRouter();
 
@@ -40,16 +39,7 @@ const GnbList = () => {
       router.push("/");
     }
   };
-
-  const handleClickMypage = () => {
-    if (!isloggedIn) {
-      alert("로그인이 필요합니다");
-      return null;
-    } else {
-      openMypageModal();
-    }
-  };
-
+  
   return (
     <>
       <Modal isOpen={loginModal} onClose={closeLoginModal}>
@@ -95,9 +85,11 @@ const GnbList = () => {
           <SearchBar />
         </li>
         <li className="flex flex-row gap-5">
-          <button onClick={handleClickMypage}>
-            <span>마이페이지</span>
-          </button>
+          {isloggedIn && (
+            <button onClick={openMypageModal}>
+              <span>마이페이지</span>
+            </button>
+          )}
           {isloggedIn ? (
             <button onClick={handleLogout}>
               <span>로그아웃</span>
