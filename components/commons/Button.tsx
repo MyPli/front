@@ -18,7 +18,7 @@ const Button = ({
     } else if (color === 'white') {
       return 'bg-white text-primary'
     } else if (color === 'border') {
-      return "border border-primary text-primary";
+      return "border border-white text-white";
     }
   }
 
